@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="ru"><head><script type="importmap">{"imports":{"16Xrt":"/wallet.8207570d.png","4BYzA":"/profit.10edc6b8.png","eoVWA":"/ledger.4ff690ac.png","loBKc":"/analytics.d3a8f4cb.png"}}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/cp.3a01df49.css">
+    <script type="module" src="/cp.e02fbd41.js" defer=""></script>
+    <title>Кошелек</title>
+</head>
+<body>
+    <div class="app">
+        <div class="container">
+            <h1>Кошелек</h1>
+            <div class="balance">
+                Баланс: <span class="balance__value">$1056,36</span>
+            </div>
+            <table class="coins">
+                <tbody><tr>
+                    <th></th>
+                    <th>Монета</th>
+                    <th>Количество</th>
+                    <th>Стоимость</th>
+                    <th></th>
+                </tr>
+            </tbody></table>
+            <button class="square-btn deposit" title="Внести криптовалюту">
+                <img class="navigation__img" src="/deposit.0b2ef318.png" alt="Внести криптовалюту">
+            </button>
+            <dialog class="new-coin-modal modal" data-action="">
+                <div class="modal__wrap">
+                    <input type="number" hidden="" name="id">
+                    <label for="coin">Монета</label>
+                    <input type="text" name="coin" id="coin">
+                    <label for="amount">Количество</label>
+                    <input type="number" name="amount" id="amount">
+                    <div class="modal__buttons">
+                        <button class="modal-btn modal-btn_ok" disabled="">Сохранить</button>
+                        <form method="dialog">
+                            <button class="modal-btn modal-btn_close">Закрыть</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+            <custom-nav data-activelink="1"></custom-nav>
+        </div>
+    </div>
+
+    <!-- Шаблоны -->
+    <template id="coin-row">
+        <tr class="coins__record" data-id="">
+            <td class="coins__btn">
+                <button class="small-btn" title="Удалить">
+                    <img src="/delete.d1f088a2.png" alt="Удалить">
+                </button>
+            </td>
+            <td class="coins__name"></td>
+            <td class="coins__amount"></td>
+            <td class="coins__price"></td>
+            <td class="coins__btn">
+                <button class="small-btn" title="Редактировать">
+                    <img src="/edit.b5d54da5.png" alt="Ручка перьевая">
+                </button>
+            </td>
+        </tr>
+    </template>
+
+</body></html>

@@ -1,0 +1,28 @@
+@import url('base.css');
+@import url('navigation/navigation.css');
+@import url('square_btn.css');
+@import url('transaction_modal/transaction_modal.css');
+@import url('add_transaction_btn/add_transaction_btn.css');
+@import url('modal/modal.css');
+@import url('modal_btn/modal_btn.css');
+
+
+/* Таблица транзакций */
+.transactions {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.transaction__date {
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+}
+
+.transactions__type_red {
+    color: red
+}
+
+.transactions__type_green {
+    color: green
+}

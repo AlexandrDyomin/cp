@@ -1,0 +1,32 @@
+@import url('base.css');
+@import url('navigation/navigation.css');
+@import url('square_btn.css');
+@import url('deposit/deposit.css');
+@import url('modal_btn/modal_btn.css');
+@import url('modal/modal.css');
+@import url('new_coin_modal/new_coin_modal.css');
+
+
+/* Общий баланс */
+.balance {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.balance__value {
+    font-weight: 600;
+}
+
+.coins__name {
+    text-transform: uppercase;
+}
+
+.coins__price::before {
+    content: '$'
+}
+
+.coins__btn {
+    width: 45px;
+    text-align: center;
+}
+

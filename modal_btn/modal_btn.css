@@ -1,0 +1,15 @@
+.modal-btn {
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+    width: 85px;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+.modal-btn_ok {
+    background: rgba(105, 131, 105, 0.562);
+}
+
+.modal-btn_close {
+    background: rgba(131, 105, 105, 0.562);
+}

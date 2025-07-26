@@ -1,0 +1,22 @@
+.add-transaction::before,
+.add-transaction::after {
+    content: "";
+    display: block;
+    border-radius: 2px;;
+    background: black;
+    position:absolute;
+}
+
+.add-transaction::before {
+    width: 4px;
+    height: 24px;
+    right: calc(50% - 2px);
+    bottom: calc(50% - 12px);
+}
+
+.add-transaction::after {
+    width: 24px;
+    height: 4px;
+    bottom: calc(50% - 2px);
+    right: calc(50% - 12px);
+}

@@ -1,0 +1,41 @@
+.navigation {
+    max-width: 500px;
+    width: 100%;
+    height: 65px;
+    padding: 10px 15px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(255, 255, 255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0px -1px 5px 0px black;
+}
+
+.navigation__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+.navigation__link {
+    display: block;
+    width: 44px;
+    height: 44px;
+}
+
+.navigation__list-item_active {
+    border-bottom: 2px solid rgb(211, 217, 49);
+    border-radius: 5px;
+}
+
+.navigation__link:focus-visible {
+    outline-offset: 4px;
+}
+
+.navigation__img {
+    width: 100%;
+}
