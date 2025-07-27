@@ -76,6 +76,16 @@ tr:hover {
   width: 85%;
 }
 
+@keyframes backlight {
+  from {
+    background-color: #79c23d;
+  }
+
+  to {
+    background-color: #fff0;
+  }
+}
+
 .navigation {
   background: #fff;
   border-top-left-radius: 10px;

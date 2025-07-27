@@ -25,7 +25,8 @@
     text-transform: uppercase;
 }
 
-.coins__price::before {
+.coins__price::before,
+.coins__total-price::before    {
     content: '$'
 }
 

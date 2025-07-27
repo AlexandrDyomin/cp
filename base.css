@@ -67,7 +67,6 @@ tr:hover {
     border-radius: 4px;
     background: white;
     cursor: pointer;
-
 }
 
 .small-btn img {
@@ -78,4 +77,15 @@ tr:hover {
 .small-btn[title=Удалить] img {
     width: 85%;
     object-position: 0px 1px;
+}
+
+@keyframes backlight {
+    from {
+        background-color: #79c23d;
+    }
+
+    to {
+        background-color: #ffffff00;
+    }
+    
 }
