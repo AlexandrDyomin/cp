@@ -17,6 +17,10 @@
     font-weight: 600;
 }
 
+.coins {
+    min-width: 300px;
+}
+
 .coins__name {
     text-transform: uppercase;
 }

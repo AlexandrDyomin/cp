@@ -15,13 +15,17 @@
                 Баланс: <span class="balance__value">$1056,36</span>
             </div>
             <table class="coins">
-                <tr>
-                    <th></th>
-                    <th>Монета</th>
-                    <th>Количество</th>
-                    <th>Стоимость</th>
-                    <th></th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Монета</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Стоимость</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
             <button class="square-btn deposit" title="Внести криптовалюту">
                 <img class="navigation__img" src="deposit.png" alt="Внести криптовалюту">
@@ -41,27 +45,8 @@
                     </div>
                 </div>
             </dialog>
-            <custom-nav data-activeLink="1"></custom-nav>
+            <custom-nav data-active-link="1"></custom-nav>
         </div>
     </div>
-
-    <!-- Шаблоны -->
-    <template id="coin-row">
-        <tr class="coins__record" data-id="">
-            <td class="coins__btn">
-                <button class="small-btn" title="Удалить">
-                    <img src="delete_btn/delete.png" alt="Удалить">
-                </button>
-            </td>
-            <td class="coins__name"></td>
-            <td class="coins__amount"></td>
-            <td class="coins__price"></td>
-            <td class="coins__btn">
-                <button class="small-btn" title="Редактировать">
-                    <img src="edit_btn/edit.png" alt="Ручка перьевая">
-                </button>
-            </td>
-        </tr>
-    </template>
 </body>
 </html>

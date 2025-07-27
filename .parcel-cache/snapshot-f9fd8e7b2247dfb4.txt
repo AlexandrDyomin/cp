@@ -1,21 +1,24 @@
-3633
-30/home/alexandr/dev/cp/index.js1753528894429129053 0
+3638
+30/home/alexandr/dev/cp/index.js1753595984121874486 0
 36/home/alexandr/dev/cp/square_btn.css1753003374987366518 0
 41/home/alexandr/dev/cp/deposit/deposit.css1753001512009125336 0
 29/home/alexandr/dev/cp/deposit1753001499179599662 1
-46/home/alexandr/dev/cp/dist/profit.10edc6b8.png1753534389304264345 0
-41/home/alexandr/dev/cp/dist/cp.e02fbd41.js1753534389317597367 0
-46/home/alexandr/dev/cp/dist/ledger.4ff690ac.png1753534389284264814 0
-44/home/alexandr/dev/cp/dist/transactions.html1753534389287598070 0
-55/home/alexandr/dev/cp/dist/transactions.fb7a4751.js.map1753534389307597601 0
-37/home/alexandr/dev/cp/dist/index.html1753534389304264345 0
-49/home/alexandr/dev/cp/dist/analytics.d3a8f4cb.png1753534389304264345 0
-26/home/alexandr/dev/cp/dist1753534389317597367 1
+44/home/alexandr/dev/cp/dist/edit.f6171159.png1753599516306678478 0
+46/home/alexandr/dev/cp/dist/profit.10edc6b8.png1753599516306678478 0
+41/home/alexandr/dev/cp/dist/cp.e02fbd41.js1753599516316678562 0
+46/home/alexandr/dev/cp/dist/ledger.4ff690ac.png1753599516306678478 0
+44/home/alexandr/dev/cp/dist/transactions.html1753599516313345201 0
+46/home/alexandr/dev/cp/dist/delete.013fca75.png1753599516306678478 0
+55/home/alexandr/dev/cp/dist/transactions.fb7a4751.js.map1753599516320011924 0
+37/home/alexandr/dev/cp/dist/index.html1753599560760394361 0
+49/home/alexandr/dev/cp/dist/analytics.d3a8f4cb.png1753599516306678478 0
+26/home/alexandr/dev/cp/dist1753599560760394361 1
 27/home/alexandr/dev/cp/db.js1753529771858409295 0
-57/home/alexandr/dev/cp/edit_btn/make_handler_open_modal.js1753508038969159590 0
-54/home/alexandr/dev/cp/edit_btn/make_func_fill_modal.js1753455462710608574 0
-43/home/alexandr/dev/cp/delete_btn/delete.png1753453459723608696 0
-46/home/alexandr/dev/cp/navigation/navigation.js1753534181847566359 0
+34/home/alexandr/dev/cp/coins_row.js1753599589023980682 0
+57/home/alexandr/dev/cp/edit_btn/make_handler_open_modal.js1753598666963197525 0
+54/home/alexandr/dev/cp/edit_btn/make_func_fill_modal.js1753598669473162682 0
+43/home/alexandr/dev/cp/delete_btn/delete.png1753594949557277520 0
+46/home/alexandr/dev/cp/navigation/navigation.js1753596978208531942 0
 39/home/alexandr/dev/cp/package-lock.json1752886651730402575 0
 31/home/alexandr/dev/cp/modal_btn1753002201110658868 1
 60/home/alexandr/dev/cp/transaction_modal/transaction_modal.js1753509467100473845 0
@@ -202,6 +205,7 @@
 76/home/alexandr/dev/cp/node_modules/@swc/helpers/src/_array_like_to_array.mjs1752787715954700156 0
 62/home/alexandr/dev/cp/node_modules/@swc/types/assumptions.d.ts1752787716221355115 0
 92/home/alexandr/dev/cp/node_modules/@swc/helpers/src/_class_static_private_field_spec_get.mjs1752787715961366528 0
+46/home/alexandr/dev/cp/delete_btn/delete_btn.js1753597929108332747 0
 76/home/alexandr/dev/cp/node_modules/@swc/helpers/src/_non_iterable_spread.mjs1752787715964699715 0
 88/home/alexandr/dev/cp/node_modules/@swc/helpers/src/_class_private_field_destructure.mjs1752787715958033343 0
 70/home/alexandr/dev/cp/node_modules/@swc/helpers/src/_object_spread.mjs1752787715964699715 0
@@ -290,7 +294,7 @@
 77/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_ts_dispose_resources.cjs1752787715854704569 0
 85/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_define_enumerable_properties.cjs1752787715844705011 0
 87/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_class_private_field_loose_base.cjs1752787715838038638 0
-52/home/alexandr/dev/cp/dist/transactions.31971e72.css1753534389304264345 0
+52/home/alexandr/dev/cp/dist/transactions.31971e72.css1753599516320011924 0
 81/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_class_private_field_init.cjs1752787715838038638 0
 75/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_async_to_generator.cjs1752787715834705453 0
 67/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_call_super.cjs1752787715834705453 0
@@ -487,7 +491,7 @@
 80/home/alexandr/dev/cp/node_modules/@swc/helpers/esm/_async_generator_delegate.js1752787715861370943 0
 68/home/alexandr/dev/cp/node_modules/@swc/helpers/esm/_create_class.js1752787715871370500 0
 71/home/alexandr/dev/cp/node_modules/@swc/helpers/esm/_sliced_to_array.js1752787715881370059 0
-45/home/alexandr/dev/cp/dist/cp.e02fbd41.js.map1753534389317597367 0
+45/home/alexandr/dev/cp/dist/cp.e02fbd41.js.map1753599516320011924 0
 92/home/alexandr/dev/cp/node_modules/@swc/helpers/_/_define_enumerable_properties/package.json1752787715921368294 0
 75/home/alexandr/dev/cp/node_modules/@swc/helpers/esm/_array_without_holes.js1752787715858037756 0
 65/home/alexandr/dev/cp/node_modules/@swc/helpers/esm/_using_ctx.js1752787715888036432 0
@@ -572,7 +576,7 @@
 62/home/alexandr/dev/cp/node_modules/to-regex-range/package.json1752787715684712071 0
 49/home/alexandr/dev/cp/node_modules/to-regex-range1752787715701378003 1
 51/home/alexandr/dev/cp/node_modules/get-port/license1752787715708044376 0
-42/home/alexandr/dev/cp/dist/cp.3a01df49.css1753534389307597601 0
+42/home/alexandr/dev/cp/dist/cp.3a01df49.css1753599516320011924 0
 56/home/alexandr/dev/cp/node_modules/get-port/package.json1752787715694711631 0
 86/home/alexandr/dev/cp/node_modules/react-refresh/cjs/react-refresh-babel.production.js1752787715808039962 0
 88/home/alexandr/dev/cp/node_modules/react-refresh/cjs/react-refresh-runtime.production.js1752787715811373148 0
@@ -777,7 +781,7 @@
 49/home/alexandr/dev/cp/node_modules/@swc/helpers/_1752787715954700156 1
 84/home/alexandr/dev/cp/node_modules/@parcel/runtime-js/src/helpers/node/css-loader.js1752787717491299551 0
 85/home/alexandr/dev/cp/node_modules/@parcel/runtime-js/src/helpers/node/node-loader.js1752787717491299551 0
-46/home/alexandr/dev/cp/dist/wallet.8207570d.png1753534389284264814 0
+46/home/alexandr/dev/cp/dist/wallet.8207570d.png1753599516306678478 0
 83/home/alexandr/dev/cp/node_modules/@parcel/runtime-js/src/helpers/node/js-loader.js1752787717491299551 0
 85/home/alexandr/dev/cp/node_modules/@parcel/runtime-js/src/helpers/node/html-loader.js1752787717491299551 0
 67/home/alexandr/dev/cp/node_modules/@parcel/packager-js/src/index.js1752787717991277754 0
@@ -1019,7 +1023,7 @@
 93/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/mdn-css-unicode-bidi-isolate.js1752787715904702364 0
 77/home/alexandr/dev/cp/node_modules/@swc/helpers/cjs/_class_name_tdz_error.cjs1752787715838038638 0
 55/home/alexandr/dev/cp/node_modules/postcss-value-parser1752787715721377121 1
-32/home/alexandr/dev/cp/delete_btn1753453676510274483 1
+32/home/alexandr/dev/cp/delete_btn1753595927719897874 1
 70/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/mpeg4.js1752787715908035549 0
 79/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/css-namespaces.js1752787715808039962 0
 86/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/constraint-validation.js1752787715774708100 0
@@ -1252,7 +1256,7 @@
 85/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/alternate-stylesheet.js1752787715748042610 0
 73/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/testfeat.js1752787715944700598 0
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/GD.js1752787715858037756 0
-46/home/alexandr/dev/cp/dist/cp.3a01df49.css.map1753534389310930856 0
+46/home/alexandr/dev/cp/dist/cp.3a01df49.css.map1753599516320011924 0
 76/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/videotracks.js1752787715954700156 0
 66/home/alexandr/dev/cp/node_modules/@parcel/utils/src/getRootDir.js1752787718581252196 0
 63/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test1752787718801242665 1
@@ -1491,7 +1495,7 @@
 80/home/alexandr/dev/cp/node_modules/node-gyp-build-optional-packages/package.json1752787715714710748 0
 77/home/alexandr/dev/cp/node_modules/@parcel/profiler/lib/SamplingProfiler.d.ts1752787717017986848 0
 77/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/css-rrggbbaa.js1752787715818039521 0
-31/home/alexandr/dev/cp/style.css1753526688830903994 0
+31/home/alexandr/dev/cp/style.css1753599315611898664 0
 84/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/css-scroll-behavior.js1752787715818039521 0
 63/home/alexandr/dev/cp/node_modules/@parcel/transformer-json/src1752787717367971593 1
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/PE.js1752787715924701480 0
@@ -1640,7 +1644,7 @@
 53/home/alexandr/dev/cp/node_modules/dotenv/config.d.ts1752787716168024121 0
 80/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/media-fragments.js1752787715904702364 0
 98/home/alexandr/dev/cp/node_modules/lmdb/dependencies/lmdb-data-v1/libraries/liblmdb/sample-bdb.txt1752787715824705893 0
-39/home/alexandr/dev/cp/transactions.html1753534389207599943 0
+39/home/alexandr/dev/cp/transactions.html1753598621570554715 0
 36/home/alexandr/dev/cp/modal/modal.js1753511603192926139 0
 36/home/alexandr/dev/cp/new_coin_modal1753325919798474361 1
 43/home/alexandr/dev/cp/node_modules/get-port1752787715708044376 1
@@ -1730,7 +1734,7 @@
 93/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/has-foo/package.json1752787718804575854 0
 77/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/script-async.js1752787715934701038 0
 71/home/alexandr/dev/cp/node_modules/@parcel/utils/test/sourcemap.test.js1752787718597918140 0
-56/home/alexandr/dev/cp/dist/transactions.31971e72.css.map1753534389304264345 0
+56/home/alexandr/dev/cp/dist/transactions.31971e72.css.map1753599516320011924 0
 75/home/alexandr/dev/cp/node_modules/@parcel/core/lib/public/PluginOptions.js1752787719211224960 0
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/KE.js1752787715891369617 0
 87/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/link-rel-modulepreload.js1752787715898035990 0
@@ -1769,13 +1773,13 @@
 102/home/alexandr/dev/cp/node_modules/@msgpackr-extract/msgpackr-extract-linux-x64/node.abi115.glibc.node1752787716294685232 0
 82/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/css-focus-visible.js1752787715791374032 0
 71/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/webvtt.js1752787715961366528 0
-54/home/alexandr/dev/cp/new_coin_modal/new_coin_modal.js1753531758143511535 0
+54/home/alexandr/dev/cp/new_coin_modal/new_coin_modal.js1753594649636595397 0
 82/home/alexandr/dev/cp/node_modules/lightningcss/node_modules/detect-libc/README.md1752787718687914242 0
 76/home/alexandr/dev/cp/node_modules/@parcel/core/test/fixtures/custom-targets1752787719234557289 1
 84/home/alexandr/dev/cp/node_modules/@parcel/core/test/fixtures/custom-targets-distdir1752787719234557289 1
 52/home/alexandr/dev/cp/node_modules/@parcel/types/src1752787716488010088 1
 84/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/input-file-multiple.js1752787715881370059 0
-30/home/alexandr/dev/cp/base.css1753455298393185408 0
+30/home/alexandr/dev/cp/base.css1753599065147660031 0
 66/home/alexandr/dev/cp/node_modules/weak-lru-cache/rollup.config.js1752787715714710748 0
 74/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/objectrtc.js1752787715921368294 0
 66/home/alexandr/dev/cp/node_modules/@parcel/reporter-tracer/LICENSE1752787718717912942 0
@@ -2193,7 +2197,7 @@
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/CH.js1752787715768041727 0
 68/home/alexandr/dev/cp/node_modules/@parcel/packager-css/package.json1752787718084607043 0
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/CL.js1752787715771374913 0
-46/home/alexandr/dev/cp/dist/delete.d1f088a2.png1753534389280931559 0
+46/home/alexandr/dev/cp/dist/delete.d1f088a2.png1753599516306678478 0
 66/home/alexandr/dev/cp/node_modules/caniuse-lite/data/regions/HR.js1752787715871370500 0
 41/home/alexandr/dev/cp/node_modules/braces1752787715728043492 1
 71/home/alexandr/dev/cp/node_modules/lmdb/dependencies/lz4/lib/lz4frame.h1752787715804706777 0
@@ -2411,7 +2415,7 @@
 59/home/alexandr/dev/cp/node_modules/json5/dist/index.min.mjs1752787715741376237 0
 74/home/alexandr/dev/cp/node_modules/@parcel/rust-linux-x64-gnu/package.json1752787716381348099 0
 97/home/alexandr/dev/cp/node_modules/@parcel/core/test/fixtures/custom-targets-distdir/package.json1752787719234557289 0
-21/home/alexandr/dev/cp1753524435294157751 1
+21/home/alexandr/dev/cp1753594110739431071 1
 81/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/childnode-remove.js1752787715768041727 0
 54/home/alexandr/dev/cp/node_modules/type-fest/base.d.ts1752787715721377121 0
 106/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/has-foo/node_modules/foo/index.js1752787718797909477 0
@@ -2495,7 +2499,7 @@
 50/home/alexandr/dev/cp/node_modules/clone/clone.iml1752787715721377121 0
 51/home/alexandr/dev/cp/node_modules/clone/.npmignore1752787715701378003 0
 41/home/alexandr/dev/cp/node_modules/base-x1752787716264686549 1
-47/home/alexandr/dev/cp/dist/deposit.0b2ef318.png1753534389284264814 0
+47/home/alexandr/dev/cp/dist/deposit.0b2ef318.png1753599516306678478 0
 49/home/alexandr/dev/cp/node_modules/semver/LICENSE1752787716048029383 0
 54/home/alexandr/dev/cp/node_modules/base-x/package.json1752787716264686549 0
 53/home/alexandr/dev/cp/node_modules/@swc/types/LICENSE1752787716221355115 0
@@ -3062,7 +3066,7 @@
 67/home/alexandr/dev/cp/node_modules/@parcel/utils/src/getExisting.js1752787718581252196 0
 60/home/alexandr/dev/cp/node_modules/@swc/helpers/_/_ts_values1752787715948033783 1
 70/home/alexandr/dev/cp/node_modules/@parcel/utils/src/getCertificate.js1752787718581252196 0
-44/home/alexandr/dev/cp/dist/edit.b5d54da5.png1753534389304264345 0
+44/home/alexandr/dev/cp/dist/edit.b5d54da5.png1753599516306678478 0
 57/home/alexandr/dev/cp/node_modules/detect-libc/.npmignore1752787715701378003 0
 72/home/alexandr/dev/cp/node_modules/@parcel/utils/src/prettyDiagnostic.js1752787718597918140 0
 67/home/alexandr/dev/cp/node_modules/@parcel/utils/src/relativeUrl.js1752787718597918140 0
@@ -3181,7 +3185,7 @@
 62/home/alexandr/dev/cp/node_modules/@parcel/watcher/binding.gyp1752787716158024559 0
 76/home/alexandr/dev/cp/node_modules/caniuse-lite/data/features/css3-colors.js1752787715821372708 0
 82/home/alexandr/dev/cp/node_modules/@parcel/watcher/src/shared/BruteForceBackend.cc1752787716158024559 0
-51/home/alexandr/dev/cp/dist/transactions.fb7a4751.js1753534389307597601 0
+51/home/alexandr/dev/cp/dist/transactions.fb7a4751.js1753599516320011924 0
 82/home/alexandr/dev/cp/node_modules/@parcel/watcher/src/shared/BruteForceBackend.hh1752787716158024559 0
 72/home/alexandr/dev/cp/node_modules/@parcel/core/test/PublicAsset.test.js1752787719211224960 0
 64/home/alexandr/dev/cp/node_modules/@lezer/lr/dist/constants.d.ts1752787716691334503 0
@@ -3230,7 +3234,7 @@
 57/home/alexandr/dev/cp/node_modules/@parcel/config-default1752787719014566761 1
 61/home/alexandr/dev/cp/node_modules/@parcel/diagnostic/LICENSE1752787718981234869 0
 70/home/alexandr/dev/cp/node_modules/@parcel/config-default/package.json1752787719014566761 0
-32/home/alexandr/dev/cp/index.html1753534116320544224 0
+32/home/alexandr/dev/cp/index.html1753599560743727548 0
 71/home/alexandr/dev/cp/node_modules/@parcel/config-default/test/.babelrc1752787719014566761 0
 65/home/alexandr/dev/cp/node_modules/@parcel/config-default/LICENSE1752787719014566761 0
 69/home/alexandr/dev/cp/node_modules/@parcel/optimizer-css/package.json1752787718444591449 0
@@ -3521,6 +3525,7 @@
 97/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/has-foo/node_modules/foo1752787718804575854 1
 96/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/packages/a/package.json1752787718804575854 0
 96/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/packages/peers/index.js1752787718797909477 0
+36/home/alexandr/dev/cp/coins_table.js1753599516213344362 0
 89/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/packages/foo-2.01752787718804575854 1
 52/home/alexandr/dev/cp/node_modules/globals/readme.md1752787715721377121 0
 98/home/alexandr/dev/cp/node_modules/@parcel/package-manager/test/fixtures/packages/foo-2.0/index.js1752787718797909477 0

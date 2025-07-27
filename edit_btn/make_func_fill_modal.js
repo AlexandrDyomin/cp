@@ -5,7 +5,7 @@ export function makeFuncFillModal({
 }) {
     return (e) => {
         let editBtn = e.target;
-        if (!e.target.closest('.small-btn')) return;
+        if (!e.target.closest('.edit-btn')) return;
         
         let record = editBtn.closest('.' + rowTableClassName);
         let id = record.dataset.id;

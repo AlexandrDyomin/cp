@@ -671,54 +671,44 @@ var _navigationJs = require("./navigation/navigation.js");
 var _depositJs = require("./deposit/deposit.js");
 var _handleClickEditBalanceBtnJs = require("./edit_btn/handleClickEditBalanceBtn.js");
 var _newCoinModalJs = require("./new_coin_modal/new_coin_modal.js");
+var _deleteBtnJs = require("./delete_btn/delete_btn.js");
 var _dbJs = require("./db.js");
-(0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('wallet', renderTable));
-function renderTable(data) {
-    let templRow = document.querySelector('#coin-row').content;
-    let rows = [];
-    data.forEach((el)=>{
-        let row = templRow.cloneNode(true);
-        row.firstElementChild.dataset.id = el.id;
-        row.querySelector('.coins__name').textContent = el.coin;
-        row.querySelector('.coins__amount').textContent = el.amount;
-        rows.push(row);
-    });
-    let table = document.querySelector('.coins');
-    table.append(...rows);
-}
+var _coinsTableJs = require("./coins_table.js");
+(0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('wallet', (0, _coinsTableJs.renderRows)));
 
-},{"./navigation/navigation.js":"8ekrc","./deposit/deposit.js":"GAlsd","./edit_btn/handleClickEditBalanceBtn.js":"afLH4","./new_coin_modal/new_coin_modal.js":"2W4C7","./db.js":"9GBZZ"}],"8ekrc":[function(require,module,exports,__globalThis) {
+},{"./navigation/navigation.js":"8ekrc","./deposit/deposit.js":"GAlsd","./edit_btn/handleClickEditBalanceBtn.js":"afLH4","./new_coin_modal/new_coin_modal.js":"2W4C7","./db.js":"9GBZZ","./coins_table.js":"c1hHC","./delete_btn/delete_btn.js":"7dXRY"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
     connectedCallback() {
-        let activeLink = this.dataset.activelink;
+        let activeLink = this.dataset.activeLink;
         setTimeout(()=>{
-            let li = this.firstElementChild.querySelector(`li:nth-child(${activeLink})`);
+            let li = this.querySelector(`li:nth-child(${activeLink})`);
             li.className = 'navigation__list-item_active';
         }, 0);
-        this.innerHTML = `<nav class="navigation">
-            <ul class="navigation__list">
-                <li>
-                    <a class="navigation__link" href="/" title="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{435}\u{43A}">
-                        <img class="navigation__img" src="${new URL(require("47174ffa7f289dd7"))}" alt="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{451}\u{43A}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/transactions" title="\u{422}\u{440}\u{430}\u{43D}\u{437}\u{430}\u{43A}\u{446}\u{438}\u{438}">
-                        <img class="navigation__img" src="${new URL(require("2d70f011d6b946fc"))}" alt="\u{411}\u{443}\u{445}\u{433}\u{430}\u{43B}\u{442}\u{435}\u{440}\u{441}\u{43A}\u{430}\u{44F} \u{43A}\u{43D}\u{438}\u{433}\u{430}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/realizedPnL" title="\u{420}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
-                        <img class="navigation__img" src="${new URL(require("9f4fd7599c814648"))}" alt="\u{420}\u{443}\u{43A}\u{430} \u{441} \u{43C}\u{435}\u{448}\u{435}\u{447}\u{43A}\u{43E}\u{43C} \u{434}\u{43B}\u{44F} \u{434}\u{435}\u{43D}\u{435}\u{433}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/unrealizedPnL" title="\u{41D}\u{435}\u{440}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
-                        <img class="navigation__img" src="${new URL(require("fb60c3e7e4d7a1a8"))}" alt="\u{413}\u{438}\u{441}\u{442}\u{43E}\u{433}\u{440}\u{430}\u{43C}\u{43C}\u{430}">
-                    </a>
-                </li>
-            </ul>
-        </nav>`;
+        this.innerHTML = `
+            <nav class="navigation">
+                <ul class="navigation__list">
+                    <li>
+                        <a class="navigation__link" href="/" title="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{435}\u{43A}">
+                            <img class="navigation__img" src="${new URL(require("47174ffa7f289dd7"))}" alt="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{451}\u{43A}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/transactions" title="\u{422}\u{440}\u{430}\u{43D}\u{437}\u{430}\u{43A}\u{446}\u{438}\u{438}">
+                            <img class="navigation__img" src="${new URL(require("2d70f011d6b946fc"))}" alt="\u{411}\u{443}\u{445}\u{433}\u{430}\u{43B}\u{442}\u{435}\u{440}\u{441}\u{43A}\u{430}\u{44F} \u{43A}\u{43D}\u{438}\u{433}\u{430}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/realizedPnL" title="\u{420}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
+                            <img class="navigation__img" src="${new URL(require("9f4fd7599c814648"))}" alt="\u{420}\u{443}\u{43A}\u{430} \u{441} \u{43C}\u{435}\u{448}\u{435}\u{447}\u{43A}\u{43E}\u{43C} \u{434}\u{43B}\u{44F} \u{434}\u{435}\u{43D}\u{435}\u{433}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/unrealizedPnL" title="\u{41D}\u{435}\u{440}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
+                            <img class="navigation__img" src="${new URL(require("fb60c3e7e4d7a1a8"))}" alt="\u{413}\u{438}\u{441}\u{442}\u{43E}\u{433}\u{440}\u{430}\u{43C}\u{43C}\u{430}">
+                        </a>
+                    </li>
+                </ul>
+            </nav>`;
     }
 });
 
@@ -807,7 +797,7 @@ parcelHelpers.export(exports, "makeHandlerOpenModal", ()=>makeHandlerOpenModal);
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
 function makeHandlerOpenModal(modal, action) {
     return (e)=>{
-        if (!e.target.closest('.small-btn')) return;
+        if (!e.target.closest('.edit-btn')) return;
         (0, _makeFuncOpenModalWindowJs.makeFuncOpenModalWindow)(modal, action)();
     };
 }
@@ -819,7 +809,7 @@ parcelHelpers.export(exports, "makeFuncFillModal", ()=>makeFuncFillModal);
 function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames }) {
     return (e)=>{
         let editBtn = e.target;
-        if (!e.target.closest('.small-btn')) return;
+        if (!e.target.closest('.edit-btn')) return;
         let record = editBtn.closest('.' + rowTableClassName);
         let id = record.dataset.id;
         let cells = [
@@ -848,9 +838,10 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2W4C7":[function(require,module,exports,__globalThis) {
 var _dbJs = require("../db.js");
 var _modalJs = require("./../modal/modal.js");
+var _coinsTableJs = require("../coins_table.js");
 (0, _modalJs.saveBtn).addEventListener('click', ()=>{
     let action = (0, _modalJs.modal).dataset.action;
-    (0, _dbJs.connectDB)(saveData(action, 'wallet', 'readwrite'));
+    (0, _dbJs.connectDB)(saveData(action));
 });
 function prepareData() {
     return [
@@ -867,66 +858,38 @@ function saveData(action) {
         let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
         let actions = {
             add: ()=>{
-                let addRequest = wallet.add(obj);
-                addRequest.onsuccess = ()=>{
-                    (0, _modalJs.modal).close();
-                    let countRequest = wallet.count();
-                    countRequest.onsuccess = (e)=>{
-                        obj.id = e.target.result;
-                        renderRows([
-                            obj
-                        ]);
-                    };
-                };
-                addRequest.onerror = ()=>{
-                    let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
-                    let coinIndex = wallet.index('coinIdx');
-                    let coin = coinIndex.get(obj.coin);
-                    coin.onsuccess = (e)=>{
-                        let record = e.target.result;
-                        if (record) {
-                            obj.id = record.id;
-                            obj.amount = record.amount + obj.amount;
-                            console.log(obj);
-                            wallet.put(obj);
+                let coinIndex = wallet.index('coinIdx');
+                let coin = coinIndex.get(obj.coin);
+                coin.onsuccess = (e)=>{
+                    let record = e.target.result;
+                    if (record) {
+                        obj.id = record.id;
+                        obj.amount = record.amount + obj.amount;
+                        (0, _coinsTableJs.updateRow)(obj);
+                        (0, _modalJs.modal).close();
+                    } else {
+                        let countRequest = wallet.count();
+                        countRequest.onsuccess = (e)=>{
+                            obj.id = e.target.result + 1;
+                            (0, _coinsTableJs.renderRows)([
+                                obj
+                            ]);
+                            (0, _coinsTableJs.updateRow)(obj);
                             (0, _modalJs.modal).close();
-                            updateRow(obj);
-                        }
-                    };
+                        };
+                    }
                 };
             },
             edit: ()=>{
-                let getRequest = wallet.get(+obj.id);
-                getRequest.onsuccess = ()=>{
-                    wallet.put(obj);
-                    (0, _modalJs.modal).close();
-                    updateRow(obj);
-                };
+                (0, _coinsTableJs.updateRow)(obj);
+                (0, _modalJs.modal).close();
             }
         };
         actions[action]();
     };
 }
-function updateRow(obj) {
-    let row = document.querySelector(`.coins__record[data-id="${obj.id}"]`);
-    row.querySelector('.coins__name').textContent = obj.coin;
-    row.querySelector('.coins__amount').textContent = obj.amount;
-}
-function renderRows(data) {
-    let templRow = document.querySelector('#coin-row').content;
-    let rows = [];
-    data.forEach((el)=>{
-        let row = templRow.cloneNode(true);
-        row.firstElementChild.dataset.id = el.id;
-        row.querySelector('.coins__name').textContent = el.coin;
-        row.querySelector('.coins__amount').textContent = el.amount;
-        rows.push(row);
-    });
-    let table = document.querySelector('.coins');
-    table.append(...rows);
-}
 
-},{"./../modal/modal.js":"h7IJc","../db.js":"9GBZZ"}],"h7IJc":[function(require,module,exports,__globalThis) {
+},{"./../modal/modal.js":"h7IJc","../db.js":"9GBZZ","../coins_table.js":"c1hHC"}],"h7IJc":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modal", ()=>modal);
@@ -995,6 +958,111 @@ function startTransaction(e, store, type) {
     return transaction.objectStore(store);
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["kxwl6","jOXmm"], "jOXmm", "parcelRequire8123", {}, "./", "/")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"c1hHC":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateRow", ()=>updateRow);
+parcelHelpers.export(exports, "renderRows", ()=>renderRows);
+var _coinsRowJs = require("./coins_row.js");
+function updateRow(obj) {
+    let row = document.querySelector(`.coins__record[data-id="${obj.id}"]`);
+    row.dataset.name = obj.coin;
+    row.dataset.amount = obj.amount;
+}
+function renderRows(data) {
+    let rows = [];
+    data.forEach((item)=>rows.push(new (0, _coinsRowJs.CustomTR)(item)));
+    let table = document.querySelector('.coins');
+    table.append(...rows);
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./coins_row.js":"d6XyV"}],"d6XyV":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CustomTR", ()=>CustomTR);
+var _dbJs = require("./db.js");
+class CustomTR extends HTMLTableRowElement {
+    price = 100;
+    totalPrice = 22;
+    addRecordToDb;
+    constructor(obj = {}){
+        super();
+        let { coin, amount, id } = obj;
+        this.setAttribute('is', 'custom-tr');
+        this.className = 'coins__record';
+        this.dataset.name = this.dataset.name || coin || '';
+        this.dataset.amount = this.dataset.amount || amount || '';
+        this.dataset.id = this.dataset.id || id || '';
+        this.templ = `
+            <td class="coins__btn">
+                <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}">
+                <img src="${new URL(require("5e74e848984717ab"))}" alt="\u{41A}\u{43E}\u{440}\u{437}\u{438}\u{43D}\u{430}">
+            </button>
+            </td>
+            <td class="coins__name">${this.dataset.name}</td>
+            <td class="coins__amount">${this.dataset.amount}</td>
+            <td class="coins__price">${this.price}</td>
+            <td class="coins__total-price">${this.totalPrice}</td>
+            <td class="coins__btn">
+            <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}">
+                <img src="${new URL(require("82178b7b56d041ba"))}" alt="\u{420}\u{443}\u{447}\u{43A}\u{430} \u{43F}\u{435}\u{440}\u{44C}\u{435}\u{432}\u{430}\u{44F}">
+            </button>
+            </td>
+        `;
+    }
+    connectedCallback() {
+        this.innerHTML = this.templ;
+    }
+    disconnectedCallback() {
+        (0, _dbJs.connectDB)((e)=>{
+            let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
+            wallet.delete(+this.dataset.id);
+        });
+    }
+    static get observedAttributes() {
+        return [
+            'data-name',
+            'data-amount',
+            'data-id'
+        ];
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (!oldValue) return;
+        let td = this.querySelector(`.coins__${name.slice(5)}`);
+        this.updateRecord();
+        td.textContent = newValue;
+    }
+    updateRecord() {
+        (0, _dbJs.connectDB)(updateCallback.bind(this));
+        function updateCallback(e) {
+            let obj = {
+                id: +this.dataset.id,
+                coin: this.dataset.name.toLowerCase(),
+                amount: +this.dataset.amount
+            };
+            let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
+            wallet.put(obj);
+        }
+    }
+}
+customElements.define('custom-tr', CustomTR, {
+    extends: 'tr'
+});
+
+},{"./db.js":"9GBZZ","5e74e848984717ab":"c54MB","82178b7b56d041ba":"bxKB2","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"c54MB":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("delete.013fca75.png") + "?" + Date.now();
+
+},{}],"bxKB2":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("edit.f6171159.png") + "?" + Date.now();
+
+},{}],"7dXRY":[function(require,module,exports,__globalThis) {
+let table = document.querySelector('.coins');
+table.addEventListener('click', deleteRow);
+function deleteRow(e) {
+    if (!e.target.closest('.delete-btn')) return;
+    e.target.closest('.coins__record').remove();
+}
+
+},{}]},["kxwl6","jOXmm"], "jOXmm", "parcelRequire8123", {}, "./", "/")
 
 //# sourceMappingURL=cp.e02fbd41.js.map

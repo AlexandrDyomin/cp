@@ -764,35 +764,36 @@ modal.addEventListener('close', ()=>{
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
     connectedCallback() {
-        let activeLink = this.dataset.activelink;
+        let activeLink = this.dataset.activeLink;
         setTimeout(()=>{
-            let li = this.firstElementChild.querySelector(`li:nth-child(${activeLink})`);
+            let li = this.querySelector(`li:nth-child(${activeLink})`);
             li.className = 'navigation__list-item_active';
         }, 0);
-        this.innerHTML = `<nav class="navigation">
-            <ul class="navigation__list">
-                <li>
-                    <a class="navigation__link" href="/" title="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{435}\u{43A}">
-                        <img class="navigation__img" src="${new URL(require("47174ffa7f289dd7"))}" alt="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{451}\u{43A}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/transactions" title="\u{422}\u{440}\u{430}\u{43D}\u{437}\u{430}\u{43A}\u{446}\u{438}\u{438}">
-                        <img class="navigation__img" src="${new URL(require("2d70f011d6b946fc"))}" alt="\u{411}\u{443}\u{445}\u{433}\u{430}\u{43B}\u{442}\u{435}\u{440}\u{441}\u{43A}\u{430}\u{44F} \u{43A}\u{43D}\u{438}\u{433}\u{430}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/realizedPnL" title="\u{420}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
-                        <img class="navigation__img" src="${new URL(require("9f4fd7599c814648"))}" alt="\u{420}\u{443}\u{43A}\u{430} \u{441} \u{43C}\u{435}\u{448}\u{435}\u{447}\u{43A}\u{43E}\u{43C} \u{434}\u{43B}\u{44F} \u{434}\u{435}\u{43D}\u{435}\u{433}">
-                    </a>
-                </li>
-                <li>
-                    <a class="navigation__link" href="/unrealizedPnL" title="\u{41D}\u{435}\u{440}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
-                        <img class="navigation__img" src="${new URL(require("fb60c3e7e4d7a1a8"))}" alt="\u{413}\u{438}\u{441}\u{442}\u{43E}\u{433}\u{440}\u{430}\u{43C}\u{43C}\u{430}">
-                    </a>
-                </li>
-            </ul>
-        </nav>`;
+        this.innerHTML = `
+            <nav class="navigation">
+                <ul class="navigation__list">
+                    <li>
+                        <a class="navigation__link" href="/" title="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{435}\u{43A}">
+                            <img class="navigation__img" src="${new URL(require("47174ffa7f289dd7"))}" alt="\u{41A}\u{43E}\u{448}\u{435}\u{43B}\u{451}\u{43A}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/transactions" title="\u{422}\u{440}\u{430}\u{43D}\u{437}\u{430}\u{43A}\u{446}\u{438}\u{438}">
+                            <img class="navigation__img" src="${new URL(require("2d70f011d6b946fc"))}" alt="\u{411}\u{443}\u{445}\u{433}\u{430}\u{43B}\u{442}\u{435}\u{440}\u{441}\u{43A}\u{430}\u{44F} \u{43A}\u{43D}\u{438}\u{433}\u{430}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/realizedPnL" title="\u{420}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
+                            <img class="navigation__img" src="${new URL(require("9f4fd7599c814648"))}" alt="\u{420}\u{443}\u{43A}\u{430} \u{441} \u{43C}\u{435}\u{448}\u{435}\u{447}\u{43A}\u{43E}\u{43C} \u{434}\u{43B}\u{44F} \u{434}\u{435}\u{43D}\u{435}\u{433}">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="navigation__link" href="/unrealizedPnL" title="\u{41D}\u{435}\u{440}\u{435}\u{430}\u{43B}\u{438}\u{437}\u{43E}\u{432}\u{430}\u{43D}\u{43D}\u{44B}\u{439} PnL">
+                            <img class="navigation__img" src="${new URL(require("fb60c3e7e4d7a1a8"))}" alt="\u{413}\u{438}\u{441}\u{442}\u{43E}\u{433}\u{440}\u{430}\u{43C}\u{43C}\u{430}">
+                        </a>
+                    </li>
+                </ul>
+            </nav>`;
     }
 });
 
@@ -836,7 +837,7 @@ parcelHelpers.export(exports, "makeHandlerOpenModal", ()=>makeHandlerOpenModal);
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
 function makeHandlerOpenModal(modal, action) {
     return (e)=>{
-        if (!e.target.closest('.small-btn')) return;
+        if (!e.target.closest('.edit-btn')) return;
         (0, _makeFuncOpenModalWindowJs.makeFuncOpenModalWindow)(modal, action)();
     };
 }
@@ -848,7 +849,7 @@ parcelHelpers.export(exports, "makeFuncFillModal", ()=>makeFuncFillModal);
 function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames }) {
     return (e)=>{
         let editBtn = e.target;
-        if (!e.target.closest('.small-btn')) return;
+        if (!e.target.closest('.edit-btn')) return;
         let record = editBtn.closest('.' + rowTableClassName);
         let id = record.dataset.id;
         let cells = [
