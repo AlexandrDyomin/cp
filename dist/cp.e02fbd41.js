@@ -675,6 +675,25 @@ var _deleteBtnJs = require("./delete_btn/delete_btn.js");
 var _dbJs = require("./db.js");
 var _coinsTableJs = require("./coins_table.js");
 (0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('wallet', (0, _coinsTableJs.renderRows)));
+document.addEventListener('total-price-resived', updateBalance);
+document.addEventListener('total-price-changed', recalcBalance);
+document.addEventListener('coin-deleted', subtract\u0421ost);
+let balanceValue = document.querySelector('.balance__value');
+function updateBalance(e) {
+    let { totalPrice } = e.detail;
+    let balance = +balanceValue.textContent;
+    balance = (balance + totalPrice).toFixed(2);
+    balanceValue.textContent = balance;
+}
+function recalcBalance() {
+    let cellsTotalPrice = document.querySelectorAll('.coins__total-price');
+    let balance = 0;
+    cellsTotalPrice.forEach((data)=>balance = +(balance + +data.textContent).toFixed(2));
+    balanceValue.textContent = balance;
+}
+function subtract\u0421ost(e) {
+    balanceValue.textContent = (+balanceValue.textContent - +e.detail.totalPrice).toFixed(2);
+}
 
 },{"./navigation/navigation.js":"8ekrc","./deposit/deposit.js":"GAlsd","./edit_btn/handleClickEditBalanceBtn.js":"afLH4","./new_coin_modal/new_coin_modal.js":"2W4C7","./db.js":"9GBZZ","./coins_table.js":"c1hHC","./delete_btn/delete_btn.js":"7dXRY"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
@@ -995,7 +1014,7 @@ class CustomTR extends HTMLTableRowElement {
         this.dataset.timeUpdate = Date.now();
     }
     connectedCallback() {
-        this.getPrice().then(this.renderPriceAndTotalPrice);
+        this.getPrice().then(this.renderPriceAndTotalPrice).then(this.dispatchTotalPrice);
         this.innerHTML = `
             <td class="coins__btn">
                 <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}">
@@ -1018,6 +1037,12 @@ class CustomTR extends HTMLTableRowElement {
             let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
             wallet.delete(+this.dataset.id);
         });
+        let price = +this.querySelector('.coins__price').textContent;
+        document.dispatchEvent(new CustomEvent('coin-deleted', {
+            detail: {
+                totalPrice: (+this.dataset.amount * price).toFixed(2)
+            }
+        }));
     }
     static get observedAttributes() {
         return [
@@ -1031,7 +1056,7 @@ class CustomTR extends HTMLTableRowElement {
         coin1.textContent = this.dataset.name;
         amount.textContent = this.dataset.amount;
         this.updateRecord();
-        this.getPrice().then(this.renderPriceAndTotalPrice);
+        this.getPrice().then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('total-price-changed')));
         this.style.animation = "backlight 3s";
         setTimeout(()=>this.style.animation = '', 3000);
     }
@@ -1050,13 +1075,20 @@ class CustomTR extends HTMLTableRowElement {
     getPrice() {
         const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines';
         return fetch(`${URL_BARS_INFO}?symbol=${this.dataset.name?.toUpperCase() || coin.toUpperCase()}USDT&interval=1d&limit=1`).then((response)=>response.json()).then((data)=>{
-            return parseFloat(data[0][4]).toFixed(2);
+            return +parseFloat(data[0][4]).toFixed(2);
         });
     }
     renderPriceAndTotalPrice = (price)=>{
         this.querySelector('.coins__price').textContent = price;
-        this.querySelector('.coins__total-price').textContent = (price * +this.dataset.amount).toFixed(2);
+        let totalPrice = +(price * +this.dataset.amount).toFixed(2);
+        this.querySelector('.coins__total-price').textContent = totalPrice;
+        return totalPrice;
     };
+    dispatchTotalPrice = (totalPrice)=>document.dispatchEvent(new CustomEvent('total-price-resived', {
+            detail: {
+                totalPrice
+            }
+        }));
 }
 customElements.define('custom-tr', CustomTR, {
     extends: 'tr'

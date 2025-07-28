@@ -26,7 +26,8 @@
 }
 
 .coins__price::before,
-.coins__total-price::before    {
+.coins__total-price::before,
+.balance__value::before    {
     content: '$'
 }
 

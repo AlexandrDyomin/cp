@@ -78,7 +78,7 @@ tr:hover {
 
 @keyframes backlight {
   from {
-    background-color: #79c23d;
+    background-color: #d6eeee;
   }
 
   to {
@@ -204,7 +204,7 @@ input[name="coin"] {
   text-transform: uppercase;
 }
 
-.coins__price:before, .coins__total-price:before {
+.coins__price:before, .coins__total-price:before, .balance__value:before {
   content: "$";
 }
 

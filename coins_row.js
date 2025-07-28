@@ -15,7 +15,8 @@ export class CustomTR extends HTMLTableRowElement {
     
     connectedCallback() {
         this.getPrice()
-            .then(this.renderPriceAndTotalPrice);
+            .then(this.renderPriceAndTotalPrice)
+            .then(this.dispatchTotalPrice);
         this.innerHTML = `
             <td class="coins__btn">
                 <button class="small-btn delete-btn" title="Удалить">
@@ -38,7 +39,12 @@ export class CustomTR extends HTMLTableRowElement {
         connectDB((e)=> {
             let wallet = startTransaction(e, 'wallet', 'readwrite');
             wallet.delete(+this.dataset.id);
-        })
+        });
+
+        let price = +this.querySelector('.coins__price').textContent;
+        document.dispatchEvent(new CustomEvent('coin-deleted', {
+            detail: { totalPrice: (+this.dataset.amount * price).toFixed(2)}
+        }));
     }
 
     static get observedAttributes() {
@@ -53,7 +59,8 @@ export class CustomTR extends HTMLTableRowElement {
         amount.textContent = this.dataset.amount;
         this.updateRecord();
         this.getPrice()
-            .then(this.renderPriceAndTotalPrice);
+            .then(this.renderPriceAndTotalPrice)
+            .then(() => document.dispatchEvent(new CustomEvent('total-price-changed')));
         this.style.animation = "backlight 3s";
         setTimeout(() => this.style.animation = '', 3000);
     }
@@ -78,14 +85,21 @@ export class CustomTR extends HTMLTableRowElement {
         return fetch(`${URL_BARS_INFO}?symbol=${this.dataset.name?.toUpperCase() || coin.toUpperCase()}USDT&interval=1d&limit=1`)
             .then((response) => response.json())
             .then((data) => {
-                return parseFloat(data[0][4]).toFixed(2);
+                return +parseFloat(data[0][4]).toFixed(2);
             });
     }
 
     renderPriceAndTotalPrice = (price) => {
         this.querySelector('.coins__price').textContent = price;
-        this.querySelector('.coins__total-price').textContent = (price * +this.dataset.amount).toFixed(2);
+        let totalPrice = +(price * +this.dataset.amount).toFixed(2);
+        this.querySelector('.coins__total-price').textContent = totalPrice;
+        return totalPrice;
     }
+
+    dispatchTotalPrice = (totalPrice) => document.dispatchEvent(
+        new CustomEvent('total-price-resived', 
+        { detail: { totalPrice } }
+    ));
 }
 
 customElements.define('custom-tr', CustomTR, { extends: 'tr' });
