@@ -4,9 +4,11 @@ import './edit_btn/handleClickEditBalanceBtn.js';
 import './new_coin_modal/new_coin_modal.js';
 import './delete_btn/delete_btn.js';
 import { connectDB, makeReadAllRecords } from './db.js';
-import { renderRows } from './coins_table.js';
+import { renderRows } from './renderRows.js';
+import { CustomTR } from './coins_row.js';
 
-connectDB(makeReadAllRecords('wallet', renderRows));
+let table = document.querySelector('.coins');
+connectDB(makeReadAllRecords('wallet', (data) => renderRows(table, data, CustomTR)));
 
 document.addEventListener('total-price-resived', updateBalance);
 document.addEventListener('total-price-changed', recalcBalance);

@@ -1,16 +1,16 @@
 import { connectDB, startTransaction } from "./db.js";
 
 export class CustomTR extends HTMLTableRowElement {
-    totalPrice = 0;
     constructor(obj = {}) {
         super();
-        let { coin, amount, id } = obj;
         this.setAttribute('is', 'custom-tr');
+        let { coin, amount, id } = obj;
         this.className = 'coins__record';
-        this.dataset.id = id || '';
-        this.dataset.name = coin || '';
-        this.dataset.amount = amount || '';
-        this.dataset.timeUpdate = Date.now();
+        let { dataset } = this;
+        dataset.id = id || dataset.id || '';
+        dataset.name = coin || dataset.name || '';
+        dataset.amount = amount || dataset.amount || '';
+        dataset.timeUpdate = Date.now();
     }
     
     connectedCallback() {
@@ -57,7 +57,7 @@ export class CustomTR extends HTMLTableRowElement {
         let amount = this.querySelector('.coins__amount');
         coin.textContent = this.dataset.name;
         amount.textContent = this.dataset.amount;
-        this.updateRecord();
+        this.saveData();
         this.getPrice()
             .then(this.renderPriceAndTotalPrice)
             .then(() => document.dispatchEvent(new CustomEvent('total-price-changed')));
@@ -65,8 +65,8 @@ export class CustomTR extends HTMLTableRowElement {
         setTimeout(() => this.style.animation = '', 3000);
     }
 
-    updateRecord() {
-        let updateCallback = (e) => {
+    saveData() {
+        let saveCallback = (e) => {
             let obj = {
                 id: +this.dataset.id,
                 coin: this.dataset.name.toLowerCase(),
@@ -77,7 +77,7 @@ export class CustomTR extends HTMLTableRowElement {
             wallet.put(obj);
         };
 
-        connectDB(updateCallback);   
+        connectDB(saveCallback);   
     }
 
     getPrice() {

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ru"><head><script type="importmap">{"imports":{"16Xrt":"/wallet.8207570d.png","4BYzA":"/profit.10edc6b8.png","eoVWA":"/ledger.4ff690ac.png","loBKc":"/analytics.d3a8f4cb.png"}}</script>
+<!DOCTYPE html><html lang="ru"><head><script type="importmap">{"imports":{"16Xrt":"/wallet.8207570d.png","2PCPf":"/edit.f6171159.png","4BYzA":"/profit.10edc6b8.png","eoVWA":"/ledger.4ff690ac.png","is7zO":"/delete.013fca75.png","loBKc":"/analytics.d3a8f4cb.png"}}</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/transactions.31971e72.css">
@@ -10,67 +10,7 @@
         <div class="container">
             <h1>Транзакции</h1>
             <table class="transactions">
-                <tbody class="transactions__record" data-id="1">
-                    <tr>
-                        <td colspan="2">
-                            <div class="transaction__date">
-                                <button class="small-btn delete-btn" title="Удалить"><img src="/delete.d1f088a2.png" alt="Удалить"></button>
-                                <time datetime="2025-07-17">17 июля 2025 г.</time>
-                                <button class="small-btn edit-btn" title="Редактировать"><img src="/edit.b5d54da5.png" alt="Редактировать"></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Пара</th>
-                        <td class="transactions__pair">USDT</td>    
-                    </tr>
-                     <tr>
-                        <th>Вид транзакции</th>
-                        <td class="transactions__type transactions__type_green">Покупка</td>  
-                    </tr>
-                    <tr>
-                        <th>Количество</th>
-                        <td class="transactions__amount">2056</td>
-                    </tr>
-                    <tr>
-                        <th>Цена</th>
-                        <td class="transactions__price">$2056</td>
-                    </tr>
-                    <tr>
-                        <th>Стоимость</th>
-                        <td class="transactions__total-price">$2056</td>
-                    </tr>
-                </tbody>
-                <tbody class="transactions__record" data-id="2">
-                    <tr>
-                        <td colspan="2">
-                            <div class="transaction__date">
-                                <button class="small-btn delete-btn" title="Удалить"><img src="/delete.d1f088a2.png" alt="Удалить"></button>
-                                <time datetime="2025-07-19">19 июля 2025 г.</time>
-                                <button class="small-btn edit-btn" title="Редактировать"><img src="/edit.b5d54da5.png" alt="Редактировать"></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Пара</th>
-                        <td class="transactions__pair">BTCUSDT</td>    
-                    </tr>
-                     <tr>
-                        <th>Вид транзакции</th>
-                        <td class="transactions__type transactions__type_green">Покупка</td>  
-                    </tr>
-                    <tr>
-                        <th>Количество</th>
-                        <td class="transactions__amount">1,6</td>
-                    </tr>
-                    <tr>
-                        <th>Цена</th>
-                        <td class="transactions__price">$12056</td>
-                    </tr>
-                    <tr>
-                        <th>Стоимость</th>
-                        <td class="transactions__total-price">$12056</td>
-                    </tr>
+                <tbody is="custom-transaction" class="transactions__record" data-date="2025-07-17T11:23" data-pair="btcusdt" data-transaction-type="Покупка" data-amount="11" data-price="32000" data-id="1">
                 </tbody>
             </table>
             <button class="square-btn add-transaction" title="Добавить транзакцию"></button>
@@ -78,11 +18,11 @@
                 <div class="modal__wrap">
                     <input type="number" hidden="" name="id">
                     <label for="date">Дата</label>
-                    <input id="date" type="date" name="date">
+                    <input id="date" type="datetime-local" name="date">
                     <label for="pair">Пара</label>
                     <input id="pair" type="text" name="pair">
                     <label for="transaction-type">Вид транзакции</label>
-                    <select id="transaction-type" name="transaction-type">
+                    <select id="transaction-type" name="transactionType">
                         <option value="">-- Выбирите вид транзакции --</option>
                         <option value="Покупка">Покупка</option>
                         <option value="Продажа">Продажа</option>
@@ -104,36 +44,5 @@
             <custom-nav data-active-link="2"></custom-nav>
         </div>
     </div>
-
-    <template id="transaction-record">
-        <tbody class="transactions__record" data-id="">
-            <tr>
-                <td class="transaction__date" colspan="2">
-                    <time datetime=""></time>
-                    <button class="small-btn edit-btn" title="Редактировать"><img src="/edit.b5d54da5.png" alt="Редактировать"></button>
-                </td>
-            </tr>
-            <tr>
-                <th>Пара</th>
-                <td class="transactions__pair"></td>    
-            </tr>
-                <tr>
-                <th>Вид транзакции</th>
-                <td class="transactions__type transactions__type_green"></td>  
-            </tr>
-            <tr>
-                <th>Количество</th>
-                <td class="transactions__amount"></td>
-            </tr>
-            <tr>
-                <th>Цена</th>
-                <td class="transactions__price"></td>
-            </tr>
-            <tr>
-                <th>Стоимость</th>
-                <td class="transactions__total-price"></td>
-            </tr>
-        </tbody>
-    </template>
 
 </body></html>

@@ -1,25 +1,21 @@
 import { connectDB, startTransaction } from "../db.js";
 import './../modal/modal.js';
 import { modal, modalFields, saveBtn } from './../modal/modal.js';
-import { updateRow, renderRows } from "../coins_table.js";
+import { updateRow } from "../coins_table.js";
+import { collectData } from "../modal/colletcData.js";
+import { renderRows } from "../renderRows.js";
+import { CustomTR } from "../coins_row.js";
+
 
 saveBtn.addEventListener('click', () => {
     let action = modal.dataset.action;
     connectDB(saveData(action));
 });
-
-function prepareData() {
-    return [ ...modalFields]
-        .reduce((acc, el) => {
-            let value = (el.type === 'number') ? +el.value : el.value.toLowerCase().trim();
-            value && (acc[el.name] = value);
-            return acc;
-        }, {});
-}
+let table = document.querySelector('.coins');
 
 function saveData(action) {
     return (e) => {
-        let obj = prepareData();
+        let obj = collectData(modalFields);
         let wallet = startTransaction(e, 'wallet', 'readwrite');
         let actions = {
             add: () => {
@@ -36,12 +32,12 @@ function saveData(action) {
                         let countRequest =  wallet.count();
                         countRequest.onsuccess = (e) => {
                             obj.id = e.target.result + 1;
-                            renderRows([obj]);
+                            renderRows(table, [obj], CustomTR);
                             updateRow(obj);
                             modal.close();
-                        }
+                        };
                     }
-                }
+                };
             },
             edit: () => {
                 updateRow(obj);

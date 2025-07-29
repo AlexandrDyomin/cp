@@ -13,10 +13,23 @@
     margin: 0 auto;
 }
 
-.transaction__date {
+.transactions__date {
     font-weight: 500;
     display: flex;
     justify-content: space-between;
+}
+
+.transactions__pair {
+    text-transform: uppercase;
+}
+
+.transactions__price::before,
+.transactions__total-price::before {
+    content: '$';
+}
+
+.transactions__type {
+    text-transform: capitalize;
 }
 
 .transactions__type_red {

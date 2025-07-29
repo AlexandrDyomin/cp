@@ -1,5 +1,5 @@
 export let modal = document.querySelector('.modal');
-export let modalFields = [ ...modal.querySelectorAll('input[name]')];
+export let modalFields = [ ...modal.querySelectorAll('*[name]')];
 export let saveBtn = modal.querySelector('.modal-btn_ok');
 
 modal.addEventListener('input', () => {

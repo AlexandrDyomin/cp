@@ -45,8 +45,17 @@ th, td {
   padding: 8px;
 }
 
+tr:first-child {
+  color: #fff;
+  background: #000;
+}
+
 tr:hover {
   background-color: #d6eeee;
+}
+
+tr:first-child:hover {
+  color: #000;
 }
 
 .container {
@@ -210,10 +219,22 @@ input[name="pair"] {
   margin: 0 auto;
 }
 
-.transaction__date {
+.transactions__date {
   justify-content: space-between;
   font-weight: 500;
   display: flex;
+}
+
+.transactions__pair {
+  text-transform: uppercase;
+}
+
+.transactions__price:before, .transactions__total-price:before {
+  content: "$";
+}
+
+.transactions__type {
+  text-transform: capitalize;
 }
 
 .transactions__type_red {

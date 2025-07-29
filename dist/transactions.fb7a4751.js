@@ -671,8 +671,9 @@ var _addTransactionBtnJs = require("./add_transaction_btn/add_transaction_btn.js
 var _transactionModalJs = require("./transaction_modal/transaction_modal.js");
 var _navigationJs = require("./navigation/navigation.js");
 var _handleClickEditTransactionBtnJs = require("./edit_btn/handleClickEditTransactionBtn.js");
+var _transactionRowJs = require("./transaction-row.js");
 
-},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL"}],"7Yuto":[function(require,module,exports,__globalThis) {
+},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW"}],"7Yuto":[function(require,module,exports,__globalThis) {
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
 let modal = document.querySelector('.transaction');
 let addTransactionBtn = document.querySelector('.add-transaction');
@@ -723,10 +724,20 @@ exports.export = function(dest, destName, get) {
 
 },{}],"dwh51":[function(require,module,exports,__globalThis) {
 var _modalJs = require("./../modal/modal.js");
+var _transactionRowJs = require("../transaction-row.js");
+var _colletcDataJs = require("../modal/colletcData.js");
+var _renderRowsJs = require("../renderRows.js");
 let amountField = (0, _modalJs.modal).querySelector('input[name=amount]');
 let priceField = (0, _modalJs.modal).querySelector('input[name=price]');
 let totalField = (0, _modalJs.modal).querySelector('input[name=total]');
+let table = document.querySelector('.transactions');
 (0, _modalJs.modal).addEventListener('input', calcTotal);
+(0, _modalJs.saveBtn).addEventListener('click', ()=>{
+    let obj = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields), 'total');
+    (0, _renderRowsJs.renderRows)(table, [
+        obj
+    ], (0, _transactionRowJs.CustomBody));
+});
 function calcTotal(e) {
     let { target } = e;
     if (![
@@ -737,7 +748,7 @@ function calcTotal(e) {
     totalField.value = total;
 }
 
-},{"./../modal/modal.js":"h7IJc"}],"h7IJc":[function(require,module,exports,__globalThis) {
+},{"./../modal/modal.js":"h7IJc","../transaction-row.js":"6vKYW","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR"}],"h7IJc":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modal", ()=>modal);
@@ -745,7 +756,7 @@ parcelHelpers.export(exports, "modalFields", ()=>modalFields);
 parcelHelpers.export(exports, "saveBtn", ()=>saveBtn);
 let modal = document.querySelector('.modal');
 let modalFields = [
-    ...modal.querySelectorAll('input[name]')
+    ...modal.querySelectorAll('*[name]')
 ];
 let saveBtn = modal.querySelector('.modal-btn_ok');
 modal.addEventListener('input', ()=>{
@@ -760,6 +771,186 @@ modal.addEventListener('close', ()=>{
     modalFields.forEach((field)=>field.value = '');
     saveBtn.setAttribute('disabled', true);
 });
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"6vKYW":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CustomBody", ()=>CustomBody);
+var _dbJs = require("./db.js");
+class CustomBody extends HTMLTableSectionElement {
+    requiredSaveToDb;
+    constructor(params = {}, requiredSaveToDb = false){
+        super();
+        this.requiredSaveToDb = requiredSaveToDb;
+        this.setAttribute('is', 'custom-transaction');
+        this.className = 'transactions__record';
+        let { id, date, pair, transactionType, amount, price } = params;
+        let { dataset } = this;
+        dataset.id = id || dataset.id || '';
+        dataset.date = date || dataset.date || '';
+        dataset.pair = pair || dataset.pair || '';
+        dataset.transactionType = transactionType || dataset.transactionType || '';
+        dataset.amount = amount || dataset.amount || '';
+        dataset.price = price || dataset.price || '';
+        this.dataset.timeUpdate = Date.now();
+    }
+    connectedCallback() {
+        this.requiredSaveToDb && this.saveData();
+        let { date, pair, transactionType, amount, price } = this.dataset;
+        let modifierTransactionType = transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430" ? 'transactions__type_green' : 'transactions__type_red';
+        this.innerHTML = `
+            <tr class="transactions__first-row">
+                <td colspan="2">
+                    <div class="transactions__date">
+                        <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"><img src="${new URL(require("610a71bc9e2d99a2"))} alt="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"></button>
+                        <time datetime=${date}>${this.formatDate(date)}</time>
+                        <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"><img src="${new URL(require("a9eb9ac4900c84cf"))} alt="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>\u{41F}\u{430}\u{440}\u{430}</th>
+                <td class="transactions__pair">${pair}</td>    
+            </tr>
+                <tr>
+                <th>\u{412}\u{438}\u{434} \u{442}\u{440}\u{430}\u{43D}\u{437}\u{430}\u{43A}\u{446}\u{438}\u{438}</th>
+                <td class="transactions__type ${modifierTransactionType}">${transactionType}</td>  
+            </tr>
+            <tr>
+                <th>\u{41A}\u{43E}\u{43B}\u{438}\u{447}\u{435}\u{441}\u{442}\u{432}\u{43E}</th>
+                <td class="transactions__amount">${amount}</td>
+            </tr>
+            <tr>
+                <th>\u{426}\u{435}\u{43D}\u{430}</th>
+                <td class="transactions__price">${price}</td>
+            </tr>
+            <tr>
+                <th>\u{421}\u{442}\u{43E}\u{438}\u{43C}\u{43E}\u{441}\u{442}\u{44C}</th>
+                <td class="transactions__total-price">${(+amount * +price).toFixed(2)}</td>
+            </tr>
+        `;
+    }
+    disconnectedCalback() {}
+    static get observedAttributes() {
+        return [
+            'data-time-update'
+        ];
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (oldValue === null) return;
+        this.saveData();
+    }
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            timeZone: 'UTC'
+        };
+        return date.toLocaleDateString('ru-RU', options);
+    }
+    saveData() {
+        let { id, date, pair, transactionType, amount, price } = this.dataset;
+        let saveCallback = (e)=>{
+            let obj = {
+                date,
+                transactionType,
+                pair,
+                amount: +amount,
+                price: +price
+            };
+            id && (obj.id = id);
+            let transactions = (0, _dbJs.startTransaction)(e, 'transactions', 'readwrite');
+            let putRequest = transactions.put(obj);
+            putRequest.onsuccess = (e)=>{
+                let id = e.target.result;
+                this.dataset.id = id;
+            };
+        };
+        (0, _dbJs.connectDB)(saveCallback);
+    }
+}
+customElements.define('custom-transaction', CustomBody, {
+    extends: 'tbody'
+});
+
+},{"610a71bc9e2d99a2":"c54MB","a9eb9ac4900c84cf":"bxKB2","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./db.js":"9GBZZ"}],"c54MB":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("delete.013fca75.png") + "?" + Date.now();
+
+},{}],"bxKB2":[function(require,module,exports,__globalThis) {
+module.exports = module.bundle.resolve("edit.f6171159.png") + "?" + Date.now();
+
+},{}],"9GBZZ":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "connectDB", ()=>connectDB);
+parcelHelpers.export(exports, "makeReadAllRecords", ()=>makeReadAllRecords);
+parcelHelpers.export(exports, "startTransaction", ()=>startTransaction);
+function connectDB(f = ()=>console.log("\u0421\u043E\u0435\u0434\u0438\u043D\u0435\u043D\u0438\u0435 \u0441 \u0411\u0414 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E")) {
+    let request = indexedDB.open('cp');
+    request.onupgradeneeded = initDB;
+    request.onsuccess = f;
+    request.onerror = logerr;
+    function initDB(e) {
+        let db = e.target.result;
+        let wallet = db.createObjectStore('wallet', {
+            keyPath: 'id',
+            autoIncrement: true
+        });
+        wallet.createIndex('coinIdx', 'coin', {
+            unique: true
+        });
+        let transactions = db.createObjectStore('transactions', {
+            keyPath: 'id',
+            autoIncrement: true
+        });
+        transactions.createIndex('coinIdx', 'pair');
+    }
+    function logerr(e) {
+        console.error("Error", e.target.error);
+    }
+}
+function makeReadAllRecords(store, f) {
+    return (e)=>{
+        let wallet = startTransaction(e, store, 'readonly');
+        let getRequest = wallet.getAll();
+        getRequest.onsuccess = (e)=>{
+            let result = e.target.result;
+            f(result);
+        };
+    };
+}
+function startTransaction(e, store, type) {
+    let db = e.target.result;
+    let transaction = db.transaction(store, type);
+    return transaction.objectStore(store);
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"dZvxN":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "collectData", ()=>collectData);
+function collectData(fields, ...excludeNames) {
+    return [
+        ...fields
+    ].reduce((acc, el)=>{
+        if (excludeNames.includes(el.name)) return acc;
+        let value = el.type === 'number' ? +el.value : el.value.trim();
+        value && (acc[el.name] = value);
+        return acc;
+    }, {});
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"bBlNR":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "renderRows", ()=>renderRows);
+function renderRows(target, data, fn) {
+    let rows = [];
+    data.forEach((item)=>rows.push(new fn(item, true)));
+    target.append(...rows);
+}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
@@ -821,7 +1012,7 @@ transactions.addEventListener('click', (0, _makeFuncFillModalJs.makeFuncFillModa
     modalClassName: 'transaction',
     rowTableClassName: 'transactions__record',
     cellsClassNames: [
-        'transaction__date time',
+        'transactions__date time',
         'transactions__pair',
         'transactions__type',
         'transactions__amount',
@@ -849,7 +1040,7 @@ parcelHelpers.export(exports, "makeFuncFillModal", ()=>makeFuncFillModal);
 function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames }) {
     return (e)=>{
         let editBtn = e.target;
-        if (!e.target.closest('.edit-btn')) return;
+        if (!editBtn.closest('.edit-btn')) return;
         let record = editBtn.closest('.' + rowTableClassName);
         let id = record.dataset.id;
         let cells = [
@@ -859,18 +1050,15 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
         let modal = document.querySelector('.' + modalClassName);
         let fieldsModal = modal.querySelectorAll('*[name]');
         fieldsModal.forEach((field, i)=>{
-            if (field.type === 'date') {
+            if (field.type === 'datetime-local') {
                 field.value = cells[i].dateTime;
                 return;
             }
-            if ([
-                'price',
-                'total'
-            ].includes(field.name)) {
-                field.value = cells[i].textContent.slice(1);
+            if (field.type === 'number') {
+                field.value = cells[i].textContent.replace(',', '.');
                 return;
             }
-            field.value = cells[i].textContent.replace(',', '.');
+            field.value = cells[i].textContent;
         });
     };
 }

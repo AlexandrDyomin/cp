@@ -12,67 +12,15 @@
         <div class="container">
             <h1>Транзакции</h1>
             <table class="transactions">
-                <tbody class="transactions__record" data-id="1">
-                    <tr>
-                        <td colspan="2">
-                            <div class="transaction__date">
-                                <button class="small-btn delete-btn" title="Удалить"><img src="delete_btn/delete.png" alt="Удалить"></button>
-                                <time datetime="2025-07-17">17 июля 2025 г.</time>
-                                <button class="small-btn edit-btn" title="Редактировать"><img src="edit_btn/edit.png" alt="Редактировать"></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Пара</th>
-                        <td class="transactions__pair">USDT</td>    
-                    </tr>
-                     <tr>
-                        <th>Вид транзакции</th>
-                        <td class="transactions__type transactions__type_green">Покупка</td>  
-                    </tr>
-                    <tr>
-                        <th>Количество</th>
-                        <td class="transactions__amount">2056</td>
-                    </tr>
-                    <tr>
-                        <th>Цена</th>
-                        <td class="transactions__price">$2056</td>
-                    </tr>
-                    <tr>
-                        <th>Стоимость</th>
-                        <td class="transactions__total-price">$2056</td>
-                    </tr>
-                </tbody>
-                <tbody class="transactions__record" data-id="2">
-                    <tr>
-                        <td colspan="2">
-                            <div class="transaction__date">
-                                <button class="small-btn delete-btn" title="Удалить"><img src="delete_btn/delete.png" alt="Удалить"></button>
-                                <time datetime="2025-07-19">19 июля 2025 г.</time>
-                                <button class="small-btn edit-btn" title="Редактировать"><img src="edit_btn/edit.png" alt="Редактировать"></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Пара</th>
-                        <td class="transactions__pair">BTCUSDT</td>    
-                    </tr>
-                     <tr>
-                        <th>Вид транзакции</th>
-                        <td class="transactions__type transactions__type_green">Покупка</td>  
-                    </tr>
-                    <tr>
-                        <th>Количество</th>
-                        <td class="transactions__amount">1,6</td>
-                    </tr>
-                    <tr>
-                        <th>Цена</th>
-                        <td class="transactions__price">$12056</td>
-                    </tr>
-                    <tr>
-                        <th>Стоимость</th>
-                        <td class="transactions__total-price">$12056</td>
-                    </tr>
+                <tbody 
+                    is="custom-transaction" 
+                    class="transactions__record" 
+                    data-date="2025-07-17T11:23"
+                    data-pair="btcusdt"
+                    data-transaction-type="Покупка"
+                    data-amount="11"
+                    data-price="32000"
+                    data-id="1">
                 </tbody>
             </table>
             <button class="square-btn add-transaction" title="Добавить транзакцию"></button>
@@ -80,11 +28,11 @@
                 <div class="modal__wrap">
                     <input type="number" hidden name="id">
                     <label for="date">Дата</label>
-                    <input id="date" type="date" name="date">
+                    <input id="date" type="datetime-local" name="date">
                     <label for="pair">Пара</label>
                     <input id="pair" type="text" name="pair">
                     <label for="transaction-type">Вид транзакции</label>
-                    <select id="transaction-type" name="transaction-type">
+                    <select id="transaction-type" name="transactionType">
                         <option value="">-- Выбирите вид транзакции --</option>
                         <option value="Покупка">Покупка</option>
                         <option value="Продажа" >Продажа</option>
@@ -106,36 +54,5 @@
             <custom-nav data-active-link="2"></custom-nav>
         </div>
     </div>
-
-    <template id="transaction-record">
-        <tbody class="transactions__record" data-id="">
-            <tr>
-                <td class="transaction__date" colspan="2">
-                    <time datetime=""></time>
-                    <button class="small-btn edit-btn" title="Редактировать"><img src="edit_btn/edit.png" alt="Редактировать"></button>
-                </td>
-            </tr>
-            <tr>
-                <th>Пара</th>
-                <td class="transactions__pair"></td>    
-            </tr>
-                <tr>
-                <th>Вид транзакции</th>
-                <td class="transactions__type transactions__type_green"></td>  
-            </tr>
-            <tr>
-                <th>Количество</th>
-                <td class="transactions__amount"></td>
-            </tr>
-            <tr>
-                <th>Цена</th>
-                <td class="transactions__price"></td>
-            </tr>
-            <tr>
-                <th>Стоимость</th>
-                <td class="transactions__total-price"></td>
-            </tr>
-        </tbody>
-    </template>
 </body>
 </html>

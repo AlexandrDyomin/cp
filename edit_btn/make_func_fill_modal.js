@@ -5,7 +5,7 @@ export function makeFuncFillModal({
 }) {
     return (e) => {
         let editBtn = e.target;
-        if (!e.target.closest('.edit-btn')) return;
+        if (!editBtn.closest('.edit-btn')) return;
         
         let record = editBtn.closest('.' + rowTableClassName);
         let id = record.dataset.id;
@@ -19,15 +19,15 @@ export function makeFuncFillModal({
         let fieldsModal = modal.querySelectorAll('*[name]');
 
         fieldsModal.forEach((field, i) => {
-            if (field.type === 'date') {
+            if (field.type === 'datetime-local') {
                 field.value = cells[i].dateTime;
                 return;
             }
-            if (['price', 'total'].includes(field.name)) {
-                field.value = cells[i].textContent.slice(1);
+            if (field.type === 'number') {
+                field.value = cells[i].textContent.replace(',', '.');
                 return;
             }
-            field.value = cells[i].textContent.replace(',', '.');
+            field.value = cells[i].textContent;
         });
     }
 }

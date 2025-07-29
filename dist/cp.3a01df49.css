@@ -45,8 +45,17 @@ th, td {
   padding: 8px;
 }
 
+tr:first-child {
+  color: #fff;
+  background: #000;
+}
+
 tr:hover {
   background-color: #d6eeee;
+}
+
+tr:first-child:hover {
+  color: #000;
 }
 
 .container {

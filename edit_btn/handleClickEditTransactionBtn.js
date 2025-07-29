@@ -14,7 +14,7 @@ transactions.addEventListener(
         modalClassName: 'transaction',
         rowTableClassName: 'transactions__record',
         cellsClassNames: [
-            'transaction__date time',
+            'transactions__date time',
             'transactions__pair',
             'transactions__type',
             'transactions__amount',

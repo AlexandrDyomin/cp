@@ -8,8 +8,8 @@ export function connectDB(f = () => console.log('Соединение с БД у
         let db = e.target.result;
         let wallet = db.createObjectStore('wallet', { keyPath: 'id', autoIncrement: true});
         wallet.createIndex('coinIdx', 'coin', { unique: true });
-        db.createObjectStore('transactions', { keyPath: 'id', autoIncrement: true});
-
+        let transactions = db.createObjectStore('transactions', { keyPath: 'id', autoIncrement: true});
+        transactions.createIndex('coinIdx', 'pair');
     }
 
     function logerr(e) {

@@ -47,8 +47,17 @@ th, td {
   border-bottom: 1px solid #DDD;
 }
 
+tr:first-child {
+    background: black;
+    color:white;
+}
+
 tr:hover {
     background-color: #D6EEEE;
+}
+
+tr:first-child:hover {
+    color: black;
 }
 
 .container {

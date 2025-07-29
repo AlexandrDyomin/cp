@@ -1,15 +1,14 @@
 import { makeHandlerOpenModal } from "./make_handler_open_modal.js";
 import { makeFuncFillModal } from "./make_func_fill_modal.js";
 
-let transactions = document.querySelector('.coins');
+let coins = document.querySelector('.coins');
 let modal = document.querySelector('.new-coin-modal');
-
-transactions.addEventListener(
+coins.addEventListener(
     'click', 
     makeHandlerOpenModal(modal, { action: 'edit' })
 );
 
-transactions.addEventListener(
+coins.addEventListener(
     'click', 
     makeFuncFillModal({
         modalClassName: 'new-coin-modal',
