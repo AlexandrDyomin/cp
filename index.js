@@ -8,7 +8,7 @@ import { renderRows } from './renderRows.js';
 import { CustomTR } from './coins_row.js';
 
 let table = document.querySelector('.coins');
-connectDB(makeReadAllRecords('wallet', (data) => renderRows(table, data, CustomTR)));
+connectDB(makeReadAllRecords('wallet', (data) => renderRows(table, data, (item) => new CustomTR(item))));
 
 document.addEventListener('total-price-resived', updateBalance);
 document.addEventListener('total-price-changed', recalcBalance);

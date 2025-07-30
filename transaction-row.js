@@ -15,7 +15,7 @@ export class CustomBody extends HTMLTableSectionElement {
         dataset.transactionType = transactionType || dataset.transactionType || '';
         dataset.amount = amount || dataset.amount || '';
         dataset.price = price || dataset.price || '';
-        this.dataset.timeUpdate = Date.now();
+        dataset.timeUpdate = Date.now();
     }
 
     connectedCallback() {
@@ -77,15 +77,15 @@ export class CustomBody extends HTMLTableSectionElement {
 
     saveData() {
         let { id, date, pair, transactionType, amount, price } = this.dataset;
+        let obj = {
+            date,
+            transactionType,
+            pair,
+            amount: +amount,
+            price: +price
+        };
+        id && (obj.id = +id);
         let saveCallback = (e) => {
-            let obj = {
-                date,
-                transactionType,
-                pair,
-                amount: +amount,
-                price: +price
-            };
-            id && (obj.id = id);
             let transactions = startTransaction(e, 'transactions', 'readwrite');
             let putRequest = transactions.put(obj);
             putRequest.onsuccess = (e) => {

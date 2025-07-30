@@ -13,7 +13,7 @@ let table = document.querySelector('.transactions');
 modal.addEventListener('input', calcTotal);
 saveBtn.addEventListener('click', () => {
     let obj = collectData(modalFields, 'total');
-    renderRows(table, [obj], CustomBody);
+    renderRows(table, [obj], (item) => new CustomBody(item, true));
 });
 
 function calcTotal(e) {
