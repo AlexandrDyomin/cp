@@ -27,9 +27,9 @@ export class CustomBody extends HTMLTableSectionElement {
             <tr class="transactions__first-row">
                 <td colspan="2">
                     <div class="transactions__date">
-                        <button class="small-btn delete-btn" title="Удалить"><img src="${ new URL('delete_btn/delete.png', import.meta.url) } alt="Удалить"></button>
+                        <button class="small-btn delete-btn" title="Удалить"><img src="${ new URL('delete_btn/delete.png', import.meta.url) } alt="Корзина"></button>
                         <time datetime=${ date }>${ this.formatDate(date) }</time>
-                        <button class="small-btn edit-btn" title="Редактировать"><img src="${ new URL('edit_btn/edit.png', import.meta.url) } alt="Редактировать"></button>
+                        <button class="small-btn edit-btn" title="Редактировать"><img src="${ new URL('edit_btn/edit.png', import.meta.url) } alt="Ручка перьевая"></button>
                     </div>
                 </td>
             </tr>

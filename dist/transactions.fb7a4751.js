@@ -819,9 +819,9 @@ class CustomBody extends HTMLTableSectionElement {
             <tr class="transactions__first-row">
                 <td colspan="2">
                     <div class="transactions__date">
-                        <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"><img src="${new URL(require("610a71bc9e2d99a2"))} alt="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"></button>
+                        <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"><img src="${new URL(require("610a71bc9e2d99a2"))} alt="\u{41A}\u{43E}\u{440}\u{437}\u{438}\u{43D}\u{430}"></button>
                         <time datetime=${date}>${this.formatDate(date)}</time>
-                        <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"><img src="${new URL(require("a9eb9ac4900c84cf"))} alt="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"></button>
+                        <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"><img src="${new URL(require("a9eb9ac4900c84cf"))} alt="\u{420}\u{443}\u{447}\u{43A}\u{430} \u{43F}\u{435}\u{440}\u{44C}\u{435}\u{432}\u{430}\u{44F}"></button>
                     </div>
                 </td>
             </tr>
