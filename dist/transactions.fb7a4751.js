@@ -737,6 +737,7 @@ let table = document.querySelector('.transactions');
     (0, _renderRowsJs.renderRows)(table, [
         obj
     ], (item)=>new (0, _transactionRowJs.CustomBody)(item, true));
+    (0, _modalJs.modal).close();
 });
 function calcTotal(e) {
     let { target } = e;

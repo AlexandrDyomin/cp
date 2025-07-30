@@ -677,11 +677,11 @@ var _renderRowsJs = require("./renderRows.js");
 var _coinsRowJs = require("./coins_row.js");
 let table = document.querySelector('.coins');
 (0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('wallet', (data)=>(0, _renderRowsJs.renderRows)(table, data, (item)=>new (0, _coinsRowJs.CustomTR)(item))));
-document.addEventListener('total-price-resived', updateBalance);
-document.addEventListener('total-price-changed', recalcBalance);
-document.addEventListener('coin-deleted', subtract\u0421ost);
+document.addEventListener('coin-added', increaseBalance);
+document.addEventListener('coin-changed', recalcBalance);
+document.addEventListener('coin-deleted', decreaseBalance);
 let balanceValue = document.querySelector('.balance__value');
-function updateBalance(e) {
+function increaseBalance(e) {
     let { totalPrice } = e.detail;
     let balance = +balanceValue.textContent;
     balance = (balance + totalPrice).toFixed(2);
@@ -693,7 +693,7 @@ function recalcBalance() {
     cellsTotalPrice.forEach((data)=>balance = +(balance + +data.textContent).toFixed(2));
     balanceValue.textContent = balance;
 }
-function subtract\u0421ost(e) {
+function decreaseBalance(e) {
     balanceValue.textContent = (+balanceValue.textContent - +e.detail.totalPrice).toFixed(2);
 }
 
@@ -962,7 +962,7 @@ class CustomTR extends HTMLTableRowElement {
     }
     async connectedCallback() {
         this.requiredSaveToDb && this.saveData();
-        this.priceRequest.then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('total-price-resived', {
+        this.priceRequest.then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('coin-added', {
                 detail: {
                     totalPrice: +this.dataset.totalPrice
                 }
@@ -1010,7 +1010,7 @@ class CustomTR extends HTMLTableRowElement {
         coinTd.textContent = coin;
         amountTd.textContent = amount;
         this.saveData();
-        this.getPrice(coin).then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('total-price-changed')));
+        this.getPrice(coin).then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('coin-changed')));
         this.style.animation = "backlight 3s";
         setTimeout(()=>this.style.animation = '', 3000);
     }
@@ -1055,8 +1055,10 @@ class CustomTR extends HTMLTableRowElement {
     }
     renderPriceAndTotalPrice = (price)=>{
         this.querySelector('.coins__price').textContent = price;
+        this.dataset.price = price;
         let totalPrice = +(price * +this.dataset.amount).toFixed(2);
         this.querySelector('.coins__total-price').textContent = totalPrice;
+        this.dataset.totalPrice = totalPrice;
     };
 }
 customElements.define('custom-tr', CustomTR, {

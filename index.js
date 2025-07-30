@@ -10,13 +10,13 @@ import { CustomTR } from './coins_row.js';
 let table = document.querySelector('.coins');
 connectDB(makeReadAllRecords('wallet', (data) => renderRows(table, data, (item) => new CustomTR(item))));
 
-document.addEventListener('total-price-resived', updateBalance);
-document.addEventListener('total-price-changed', recalcBalance);
-document.addEventListener('coin-deleted', subtractСost);
+document.addEventListener('coin-added', increaseBalance);
+document.addEventListener('coin-changed', recalcBalance);
+document.addEventListener('coin-deleted', decreaseBalance);
 
 let balanceValue = document.querySelector('.balance__value');
 
-function updateBalance(e) {
+function increaseBalance(e) {
     let { totalPrice } = e.detail;
     let balance = +balanceValue.textContent;
     balance = (balance + totalPrice).toFixed(2);
@@ -30,6 +30,6 @@ function recalcBalance() {
     balanceValue.textContent = balance;
 }
 
-function subtractСost(e) {
+function decreaseBalance(e) {
     balanceValue.textContent = (+balanceValue.textContent - +e.detail.totalPrice).toFixed(2);
 }

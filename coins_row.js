@@ -26,7 +26,7 @@ export class CustomTR extends HTMLTableRowElement {
         this.priceRequest
             .then(this.renderPriceAndTotalPrice)
             .then(() =>  document.dispatchEvent(
-                new CustomEvent('total-price-resived', 
+                new CustomEvent('coin-added', 
                 { detail: { totalPrice: +this.dataset.totalPrice } }
             )));
         let { name, amount } = this.dataset;
@@ -74,7 +74,7 @@ export class CustomTR extends HTMLTableRowElement {
         this.saveData();
         this.getPrice(coin)
             .then(this.renderPriceAndTotalPrice)
-            .then(() => document.dispatchEvent(new CustomEvent('total-price-changed')));
+            .then(() => document.dispatchEvent(new CustomEvent('coin-changed')));
         this.style.animation = "backlight 3s";
         setTimeout(() => this.style.animation = '', 3000);
     }
@@ -125,8 +125,10 @@ export class CustomTR extends HTMLTableRowElement {
 
     renderPriceAndTotalPrice = (price) => {
         this.querySelector('.coins__price').textContent = price;
+        this.dataset.price = price;
         let totalPrice = +(price * +this.dataset.amount).toFixed(2);
         this.querySelector('.coins__total-price').textContent = totalPrice;
+        this.dataset.totalPrice = totalPrice;
     }
 }
 
