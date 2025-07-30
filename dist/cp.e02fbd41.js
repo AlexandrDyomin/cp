@@ -889,7 +889,7 @@ let modalFields = [
 let saveBtn = modal.querySelector('.modal-btn_ok');
 modal.addEventListener('input', ()=>{
     if (modalFields.filter((el)=>el.name !== 'id').every((el)=>{
-        if (el.type === 'number' && el.value < 0) return false;
+        if (el.type === 'number' && el.value <= 0) return false;
         return !!el.value;
     })) saveBtn.removeAttribute('disabled');
     else saveBtn.setAttribute('disabled', true);
@@ -956,13 +956,17 @@ class CustomTR extends HTMLTableRowElement {
         this.priceRequest = this.getPrice(dataset.name);
         this.priceRequest.then((price)=>{
             dataset.price = price;
-            dataset.totalPrice = (dataset.amount * price).toFixed(2);
+            dataset.totalPrice = (+dataset.amount * price).toFixed(2);
             return price;
         });
     }
     async connectedCallback() {
         this.requiredSaveToDb && this.saveData();
-        this.priceRequest.then(this.renderPriceAndTotalPrice).then(this.dispatchTotalPrice);
+        this.priceRequest.then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('total-price-resived', {
+                detail: {
+                    totalPrice: +this.dataset.totalPrice
+                }
+            })));
         let { name, amount } = this.dataset;
         this.innerHTML = `
             <td class="coins__btn">
@@ -982,26 +986,24 @@ class CustomTR extends HTMLTableRowElement {
         `;
     }
     disconnectedCallback() {
-        let { id, amount, price } = this.dataset;
+        let { id, totalPrice } = this.dataset;
         (0, _dbJs.connectDB)((e)=>{
             let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
             wallet.delete(+id);
         });
         document.dispatchEvent(new CustomEvent('coin-deleted', {
             detail: {
-                totalPrice: (+amount * +price).toFixed(2)
+                totalPrice: totalPrice
             }
         }));
     }
     static get observedAttributes() {
         return [
-            'data-time-update',
-            'data-total-price'
+            'data-time-update'
         ];
     }
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        if (name === 'data-total-price') return;
         let { name: coin, amount } = this.dataset;
         let coinTd = this.querySelector('.coins__name');
         let amountTd = this.querySelector('.coins__amount');
@@ -1055,14 +1057,7 @@ class CustomTR extends HTMLTableRowElement {
         this.querySelector('.coins__price').textContent = price;
         let totalPrice = +(price * +this.dataset.amount).toFixed(2);
         this.querySelector('.coins__total-price').textContent = totalPrice;
-        this.dataset.totalPrice = totalPrice;
-        return totalPrice;
     };
-    dispatchTotalPrice = (totalPrice)=>document.dispatchEvent(new CustomEvent('total-price-resived', {
-            detail: {
-                totalPrice
-            }
-        }));
 }
 customElements.define('custom-tr', CustomTR, {
     extends: 'tr'

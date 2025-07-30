@@ -761,7 +761,7 @@ let modalFields = [
 let saveBtn = modal.querySelector('.modal-btn_ok');
 modal.addEventListener('input', ()=>{
     if (modalFields.filter((el)=>el.name !== 'id').every((el)=>{
-        if (el.type === 'number' && el.value < 0) return false;
+        if (el.type === 'number' && el.value <= 0) return false;
         return !!el.value;
     })) saveBtn.removeAttribute('disabled');
     else saveBtn.setAttribute('disabled', true);

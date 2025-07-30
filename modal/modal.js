@@ -6,7 +6,7 @@ modal.addEventListener('input', () => {
     if (modalFields
         .filter((el) => el.name !== 'id')
         .every((el) => {
-            if (el.type === 'number' && el.value < 0) {
+            if (el.type === 'number' && el.value <= 0) {
                 return false;
             }
             return !!el.value;
