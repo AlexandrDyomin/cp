@@ -4,9 +4,9 @@ export let saveBtn = modal.querySelector('.modal-btn_ok');
 
 modal.addEventListener('input', () => {
     if (modalFields
-        .filter((el) => el.name !== 'id')
+        .filter((el) => el.name !== 'id' && el.name !== 'total')
         .every((el) => {
-            if (el.type === 'number' && el.value <= 0) {
+            if (el.type === 'number' && +el.value <= 0) {
                 return false;
             }
             return !!el.value;

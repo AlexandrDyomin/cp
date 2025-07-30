@@ -90,11 +90,20 @@ tr:first-child:hover {
 
 @keyframes backlight {
     from {
-        background-color: #D6EEEE;
+        background: #D6EEEE;
     }
 
     to {
-        background-color: #ffffff00;
+        background: #ffffff00;
     }
-    
+}
+
+@keyframes colorlight {
+    from {
+        color: #D6EEEE;
+    }
+
+    to {
+        color: #ffffff;
+    }
 }

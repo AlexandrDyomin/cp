@@ -56,8 +56,13 @@ export class CustomBody extends HTMLTableSectionElement {
         `;
     }
 
-    disconnectedCalback() {
+    disconnectedCallback() {
+        let { id } = this.dataset;
 
+        connectDB((e)=> {
+            let transactions = startTransaction(e, 'transactions', 'readwrite');
+            transactions.delete(+id);
+        });
     }
 
     static get observedAttributes() {
@@ -67,6 +72,32 @@ export class CustomBody extends HTMLTableSectionElement {
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
         this.saveData();
+
+        let datasetNames = ['date', 'pair', 'transactionType', 'amount', 'price', 'total'];
+        ['.transactions__date time', 
+            '.transactions__pair', 
+            '.transactions__type', 
+            '.transactions__amount', 
+            '.transactions__price', 
+            '.transactions__total-price']
+            .forEach((selector, i) => {
+                let td = this.querySelector(selector);
+                if (selector === '.transactions__date time') {
+                    td.datetime = this.dataset.date;
+                    td.textContent = this.formatDate(this.dataset.date);
+                    return;
+                }
+                td.textContent = this.dataset[datasetNames[i]];
+            });
+
+        this.style.animation = "backlight 3s";
+        this.firstElementChild.style.animation = "colorlight 3s";
+
+        setTimeout(() => {
+            this.firstElementChild.style.animation = '';
+            this.style.animation = '';
+        }
+        , 3000);
     }
 
     formatDate(dateString) {

@@ -4,5 +4,5 @@ let modal = document.querySelector('.transaction');
 let addTransactionBtn = document.querySelector('.add-transaction');
 addTransactionBtn.addEventListener(
     'click', 
-    makeFuncOpenModalWindow(modal, { action: 'edit' })
+    makeFuncOpenModalWindow(modal, { action: 'add' })
 );

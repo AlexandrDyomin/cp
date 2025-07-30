@@ -1,7 +1,8 @@
-let table = document.querySelector('.coins');
+let table = document.querySelector('.coins') || document.querySelector('.transactions');
 table.addEventListener('click', deleteRow);
 
 function deleteRow(e) {
     if (!e.target.closest('.delete-btn')) return;
-    e.target.closest('.coins__record').remove();
+    let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
+    record.remove();
 }

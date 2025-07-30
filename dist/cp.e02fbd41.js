@@ -855,28 +855,28 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"2W4C7":[function(require,module,exports,__globalThis) {
 var _modalJs = require("./../modal/modal.js");
-var _coinsTableJs = require("../coins_table.js");
+var _updateRowJs = require("../update_row.js");
 var _renderRowsJs = require("../renderRows.js");
 var _colletcDataJs = require("../modal/colletcData.js");
 var _coinsRowJs = require("../coins_row.js");
+let table = document.querySelector('.coins');
 (0, _modalJs.saveBtn).addEventListener('click', ()=>{
     let action = (0, _modalJs.modal).dataset.action;
     saveData(action)();
     (0, _modalJs.modal).close();
 });
-let table = document.querySelector('.coins');
 function saveData(action) {
     let obj = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields));
     let actions = {
         add: ()=>(0, _renderRowsJs.renderRows)(table, [
                 obj
             ], (item)=>new (0, _coinsRowJs.CustomTR)(item, true)),
-        edit: ()=>(0, _coinsTableJs.updateRow)(table.querySelector(`.coins__record[data-id="${obj.id}"]`), obj)
+        edit: ()=>(0, _updateRowJs.updateRow)(table.querySelector(`.coins__record[data-id="${obj.id}"]`), obj)
     };
     return actions[action];
 }
 
-},{"./../modal/modal.js":"h7IJc","../coins_table.js":"c1hHC","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR","../coins_row.js":"d6XyV"}],"h7IJc":[function(require,module,exports,__globalThis) {
+},{"./../modal/modal.js":"h7IJc","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR","../coins_row.js":"d6XyV","../update_row.js":"dIDKc"}],"h7IJc":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modal", ()=>modal);
@@ -888,8 +888,8 @@ let modalFields = [
 ];
 let saveBtn = modal.querySelector('.modal-btn_ok');
 modal.addEventListener('input', ()=>{
-    if (modalFields.filter((el)=>el.name !== 'id').every((el)=>{
-        if (el.type === 'number' && el.value <= 0) return false;
+    if (modalFields.filter((el)=>el.name !== 'id' && el.name !== 'total').every((el)=>{
+        if (el.type === 'number' && +el.value <= 0) return false;
         return !!el.value;
     })) saveBtn.removeAttribute('disabled');
     else saveBtn.setAttribute('disabled', true);
@@ -899,16 +899,6 @@ modal.addEventListener('close', ()=>{
     modalFields.forEach((field)=>field.value = '');
     saveBtn.setAttribute('disabled', true);
 });
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"c1hHC":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "updateRow", ()=>updateRow);
-function updateRow(target, { coin, amount }) {
-    target.dataset.name = coin;
-    target.dataset.amount = amount;
-    target.dataset.timeUpdate = Date.now();
-}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"dZvxN":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1117,12 +1107,22 @@ module.exports = module.bundle.resolve("delete.013fca75.png") + "?" + Date.now()
 },{}],"bxKB2":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("edit.f6171159.png") + "?" + Date.now();
 
-},{}],"7dXRY":[function(require,module,exports,__globalThis) {
-let table = document.querySelector('.coins');
+},{}],"dIDKc":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateRow", ()=>updateRow);
+function updateRow(target, obj) {
+    for (let [key, value] of Object.entries(obj))target.dataset[key] = value;
+    target.dataset.timeUpdate = Date.now();
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7dXRY":[function(require,module,exports,__globalThis) {
+let table = document.querySelector('.coins') || document.querySelector('.transactions');
 table.addEventListener('click', deleteRow);
 function deleteRow(e) {
     if (!e.target.closest('.delete-btn')) return;
-    e.target.closest('.coins__record').remove();
+    let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
+    record.remove();
 }
 
 },{}]},["kxwl6","jOXmm"], "jOXmm", "parcelRequire8123", {}, "./", "/")

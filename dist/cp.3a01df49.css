@@ -87,11 +87,21 @@ tr:first-child:hover {
 
 @keyframes backlight {
   from {
-    background-color: #d6eeee;
+    background: #d6eeee;
   }
 
   to {
-    background-color: #fff0;
+    background: #fff0;
+  }
+}
+
+@keyframes colorlight {
+  from {
+    color: #d6eeee;
+  }
+
+  to {
+    color: #fff;
   }
 }
 

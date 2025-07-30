@@ -672,13 +672,20 @@ var _transactionModalJs = require("./transaction_modal/transaction_modal.js");
 var _navigationJs = require("./navigation/navigation.js");
 var _handleClickEditTransactionBtnJs = require("./edit_btn/handleClickEditTransactionBtn.js");
 var _transactionRowJs = require("./transaction-row.js");
+var _deleteBtnJs = require("./delete_btn/delete_btn.js");
+var _dbJs = require("./db.js");
+var _renderRowsJs = require("./renderRows.js");
+let table = document.querySelector('.transactions');
+(0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('transactions', (data)=>{
+    (0, _renderRowsJs.renderRows)(table, data, (item)=>new (0, _transactionRowJs.CustomBody)(item));
+}));
 
-},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW"}],"7Yuto":[function(require,module,exports,__globalThis) {
+},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW","./db.js":"9GBZZ","./renderRows.js":"bBlNR","./delete_btn/delete_btn.js":"7dXRY"}],"7Yuto":[function(require,module,exports,__globalThis) {
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
 let modal = document.querySelector('.transaction');
 let addTransactionBtn = document.querySelector('.add-transaction');
 addTransactionBtn.addEventListener('click', (0, _makeFuncOpenModalWindowJs.makeFuncOpenModalWindow)(modal, {
-    action: 'edit'
+    action: 'add'
 }));
 
 },{"../make_func_open_modal_window.js":"cdURY"}],"cdURY":[function(require,module,exports,__globalThis) {
@@ -727,18 +734,27 @@ var _modalJs = require("./../modal/modal.js");
 var _transactionRowJs = require("../transaction-row.js");
 var _colletcDataJs = require("../modal/colletcData.js");
 var _renderRowsJs = require("../renderRows.js");
+var _updateRowJs = require("../update_row.js");
 let amountField = (0, _modalJs.modal).querySelector('input[name=amount]');
 let priceField = (0, _modalJs.modal).querySelector('input[name=price]');
 let totalField = (0, _modalJs.modal).querySelector('input[name=total]');
 let table = document.querySelector('.transactions');
 (0, _modalJs.modal).addEventListener('input', calcTotal);
 (0, _modalJs.saveBtn).addEventListener('click', ()=>{
-    let obj = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields), 'total');
-    (0, _renderRowsJs.renderRows)(table, [
-        obj
-    ], (item)=>new (0, _transactionRowJs.CustomBody)(item, true));
+    let action = (0, _modalJs.modal).dataset.action;
+    saveData(action)();
     (0, _modalJs.modal).close();
 });
+function saveData(action) {
+    let obj = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields));
+    let actions = {
+        add: ()=>(0, _renderRowsJs.renderRows)(table, [
+                obj
+            ], (item)=>new (0, _transactionRowJs.CustomBody)(item, true)),
+        edit: ()=>(0, _updateRowJs.updateRow)(table.querySelector(`.transactions__record[data-id="${obj.id}"]`), obj)
+    };
+    return actions[action];
+}
 function calcTotal(e) {
     let { target } = e;
     if (![
@@ -749,7 +765,7 @@ function calcTotal(e) {
     totalField.value = total;
 }
 
-},{"./../modal/modal.js":"h7IJc","../transaction-row.js":"6vKYW","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR"}],"h7IJc":[function(require,module,exports,__globalThis) {
+},{"./../modal/modal.js":"h7IJc","../transaction-row.js":"6vKYW","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR","../update_row.js":"dIDKc"}],"h7IJc":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modal", ()=>modal);
@@ -761,8 +777,8 @@ let modalFields = [
 ];
 let saveBtn = modal.querySelector('.modal-btn_ok');
 modal.addEventListener('input', ()=>{
-    if (modalFields.filter((el)=>el.name !== 'id').every((el)=>{
-        if (el.type === 'number' && el.value <= 0) return false;
+    if (modalFields.filter((el)=>el.name !== 'id' && el.name !== 'total').every((el)=>{
+        if (el.type === 'number' && +el.value <= 0) return false;
         return !!el.value;
     })) saveBtn.removeAttribute('disabled');
     else saveBtn.setAttribute('disabled', true);
@@ -831,7 +847,13 @@ class CustomBody extends HTMLTableSectionElement {
             </tr>
         `;
     }
-    disconnectedCalback() {}
+    disconnectedCallback() {
+        let { id } = this.dataset;
+        (0, _dbJs.connectDB)((e)=>{
+            let transactions = (0, _dbJs.startTransaction)(e, 'transactions', 'readwrite');
+            transactions.delete(+id);
+        });
+    }
     static get observedAttributes() {
         return [
             'data-time-update'
@@ -840,6 +862,36 @@ class CustomBody extends HTMLTableSectionElement {
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
         this.saveData();
+        let datasetNames = [
+            'date',
+            'pair',
+            'transactionType',
+            'amount',
+            'price',
+            'total'
+        ];
+        [
+            '.transactions__date time',
+            '.transactions__pair',
+            '.transactions__type',
+            '.transactions__amount',
+            '.transactions__price',
+            '.transactions__total-price'
+        ].forEach((selector, i)=>{
+            let td = this.querySelector(selector);
+            if (selector === '.transactions__date time') {
+                td.datetime = this.dataset.date;
+                td.textContent = this.formatDate(this.dataset.date);
+                return;
+            }
+            td.textContent = this.dataset[datasetNames[i]];
+        });
+        this.style.animation = "backlight 3s";
+        this.firstElementChild.style.animation = "colorlight 3s";
+        setTimeout(()=>{
+            this.firstElementChild.style.animation = '';
+            this.style.animation = '';
+        }, 3000);
     }
     formatDate(dateString) {
         const date = new Date(dateString);
@@ -953,6 +1005,15 @@ function renderRows(target, data, fn) {
     target.append(...rows);
 }
 
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"dIDKc":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateRow", ()=>updateRow);
+function updateRow(target, obj) {
+    for (let [key, value] of Object.entries(obj))target.dataset[key] = value;
+    target.dataset.timeUpdate = Date.now();
+}
+
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
     connectedCallback() {
@@ -1064,6 +1125,15 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
     };
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7dXRY":[function(require,module,exports,__globalThis) {
+let table = document.querySelector('.coins') || document.querySelector('.transactions');
+table.addEventListener('click', deleteRow);
+function deleteRow(e) {
+    if (!e.target.closest('.delete-btn')) return;
+    let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
+    record.remove();
+}
+
+},{}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
 
 //# sourceMappingURL=transactions.fb7a4751.js.map
