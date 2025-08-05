@@ -14,7 +14,7 @@ coins.addEventListener(
         modalClassName: 'new-coin-modal',
         rowTableClassName: 'coins__record',
         cellsClassNames: [
-            'coins__name',
+            'coins__coin',
             'coins__amount',
         ]
     })

@@ -679,6 +679,64 @@ let table = document.querySelector('.transactions');
 (0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('transactions', (data)=>{
     (0, _renderRowsJs.renderRows)(table, data, (item)=>new (0, _transactionRowJs.CustomBody)(item));
 }));
+document.addEventListener('transaction-changed', recalcWallet);
+function recalcWallet(e) {
+    let { oldData, newData } = e.detail;
+    (0, _dbJs.connectDB)(updateWallet);
+    function updateWallet(req) {
+        let wallet = (0, _dbJs.startTransaction)(req, 'wallet', 'readwrite');
+        let coinIndex = wallet.index('coinIdx');
+        let oldCoins = oldData.pair?.split('/');
+        let newCoins = newData.pair?.split('/');
+        if (oldData.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+            Promise.all([
+                updateCoin(oldCoins[0], -1 * oldData.amount),
+                updateCoin(oldCoins[1], oldData.total)
+            ]).then(()=>{
+                if (newData.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+                    updateCoin(newCoins[0], newData.amount);
+                    updateCoin(newCoins[1], -1 * newData.total);
+                    return;
+                }
+                if (newData.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+                    updateCoin(newCoins[0], -1 * newData.amount);
+                    updateCoin(newCoins[1], newData.total);
+                    return;
+                }
+            });
+            return;
+        }
+        if (oldData.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+            Promise.all([
+                updateCoin(oldCoins[0], oldData.amount),
+                updateCoin(oldCoins[1], -1 * oldData.total)
+            ]).then(()=>{
+                if (newData.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+                    updateCoin(newCoins[0], -1 * newData.amount);
+                    updateCoin(newCoins[1], newData.total);
+                    return;
+                }
+                if (newData.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+                    updateCoin(newCoins[0], newData.amount);
+                    updateCoin(newCoins[1], -1 * newData.total);
+                }
+            });
+            return;
+        }
+        function updateCoin(coin, delta) {
+            return new Promise((resolve, reject)=>{
+                let getRequest = coinIndex.get(coin);
+                getRequest.onsuccess = ()=>{
+                    let result = getRequest.result;
+                    result.amount += delta;
+                    let updateRequest = wallet.put(result);
+                    updateRequest.onsuccess = ()=>resolve(updateRequest);
+                    updateRequest.onerror = ()=>reject(updateRequest.error);
+                };
+            });
+        }
+    }
+}
 
 },{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW","./db.js":"9GBZZ","./renderRows.js":"bBlNR","./delete_btn/delete_btn.js":"7dXRY"}],"7Yuto":[function(require,module,exports,__globalThis) {
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
@@ -795,7 +853,6 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "CustomBody", ()=>CustomBody);
 var _dbJs = require("./db.js");
 class CustomBody extends HTMLTableSectionElement {
-    requiredSaveToDb;
     constructor(params = {}, requiredSaveToDb = false){
         super();
         this.requiredSaveToDb = requiredSaveToDb;
@@ -809,19 +866,24 @@ class CustomBody extends HTMLTableSectionElement {
         dataset.transactionType = transactionType || dataset.transactionType || '';
         dataset.amount = amount || dataset.amount || '';
         dataset.price = price || dataset.price || '';
+        dataset.total = (+amount * +price).toFixed(2);
         dataset.timeUpdate = Date.now();
     }
     connectedCallback() {
         this.requiredSaveToDb && this.saveData();
-        let { date, pair, transactionType, amount, price } = this.dataset;
+        let { date, pair, transactionType, amount, price, total } = this.dataset;
         let modifierTransactionType = transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430" ? 'transactions__type_green' : 'transactions__type_red';
         this.innerHTML = `
             <tr class="transactions__first-row">
                 <td colspan="2">
                     <div class="transactions__date">
-                        <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}"><img src="${new URL(require("610a71bc9e2d99a2"))} alt="\u{41A}\u{43E}\u{440}\u{437}\u{438}\u{43D}\u{430}"></button>
+                        <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}">
+                            <img src="${new URL(require("610a71bc9e2d99a2"))} alt="\u{41A}\u{43E}\u{440}\u{437}\u{438}\u{43D}\u{430}">
+                        </button>
                         <time datetime=${date}>${this.formatDate(date)}</time>
-                        <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}"><img src="${new URL(require("a9eb9ac4900c84cf"))} alt="\u{420}\u{443}\u{447}\u{43A}\u{430} \u{43F}\u{435}\u{440}\u{44C}\u{435}\u{432}\u{430}\u{44F}"></button>
+                        <button class="small-btn edit-btn" title="\u{420}\u{435}\u{434}\u{430}\u{43A}\u{442}\u{438}\u{440}\u{43E}\u{432}\u{430}\u{442}\u{44C}">
+                            <img src="${new URL(require("a9eb9ac4900c84cf"))} alt="\u{420}\u{443}\u{447}\u{43A}\u{430} \u{43F}\u{435}\u{440}\u{44C}\u{435}\u{432}\u{430}\u{44F}">
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -843,7 +905,7 @@ class CustomBody extends HTMLTableSectionElement {
             </tr>
             <tr>
                 <th>\u{421}\u{442}\u{43E}\u{438}\u{43C}\u{43E}\u{441}\u{442}\u{44C}</th>
-                <td class="transactions__total-price">${(+amount * +price).toFixed(2)}</td>
+                <td class="transactions__total-price">${total}</td>
             </tr>
         `;
     }
@@ -861,37 +923,66 @@ class CustomBody extends HTMLTableSectionElement {
     }
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        this.saveData();
-        let datasetNames = [
-            'date',
-            'pair',
-            'transactionType',
-            'amount',
-            'price',
-            'total'
-        ];
-        [
-            '.transactions__date time',
-            '.transactions__pair',
-            '.transactions__type',
-            '.transactions__amount',
-            '.transactions__price',
-            '.transactions__total-price'
-        ].forEach((selector, i)=>{
-            let td = this.querySelector(selector);
-            if (selector === '.transactions__date time') {
-                td.datetime = this.dataset.date;
-                td.textContent = this.formatDate(this.dataset.date);
-                return;
+        if (name === 'data-time-update') {
+            (0, _dbJs.connectDB)(dispatchTransactionChangedEvent.bind(this));
+            function dispatchTransactionChangedEvent(req) {
+                let transactions = (0, _dbJs.startTransaction)(req, 'transactions', 'readonly');
+                let getRequest = transactions.get(+this.dataset.id);
+                getRequest.onsuccess = ()=>{
+                    let newData = {
+                        pair: this.dataset.pair,
+                        transactionType: this.dataset.transactionType,
+                        amount: +this.dataset.amount,
+                        total: +this.dataset.total
+                    };
+                    let result = getRequest.result;
+                    let oldData = {
+                        pair: result.pair,
+                        transactionType: result.transactionType,
+                        amount: result.amount,
+                        total: result.price * result.amount
+                    };
+                    document.dispatchEvent(new CustomEvent('transaction-changed', {
+                        detail: {
+                            oldData,
+                            newData
+                        }
+                    }));
+                };
             }
-            td.textContent = this.dataset[datasetNames[i]];
-        });
-        this.style.animation = "backlight 3s";
-        this.firstElementChild.style.animation = "colorlight 3s";
-        setTimeout(()=>{
-            this.firstElementChild.style.animation = '';
-            this.style.animation = '';
-        }, 3000);
+            this.saveData();
+            let datasetNames = [
+                'date',
+                'pair',
+                'transactionType',
+                'amount',
+                'price',
+                'total'
+            ];
+            [
+                '.transactions__date time',
+                '.transactions__pair',
+                '.transactions__type',
+                '.transactions__amount',
+                '.transactions__price',
+                '.transactions__total-price'
+            ].forEach((selector, i)=>{
+                let td = this.querySelector(selector);
+                if (selector === '.transactions__date time') {
+                    td.datetime = this.dataset.date;
+                    td.textContent = this.formatDate(this.dataset.date);
+                    return;
+                }
+                td.textContent = this.dataset[datasetNames[i]];
+            });
+            this.style.animation = "backlight 3s";
+            this.firstElementChild.style.animation = "colorlight 3s";
+            setTimeout(()=>{
+                this.firstElementChild.style.animation = '';
+                this.style.animation = '';
+            }, 3000);
+            return;
+        }
     }
     formatDate(dateString) {
         const date = new Date(dateString);

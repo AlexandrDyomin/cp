@@ -2,6 +2,7 @@ import { connectDB, startTransaction } from "./db.js";
 
 export class CustomTR extends HTMLTableRowElement {
     priceRequest;
+    totalPrice;
     constructor(params = {}, requiredSaveToDb = false) {
         super();
         this.requiredSaveToDb = requiredSaveToDb;
@@ -10,13 +11,12 @@ export class CustomTR extends HTMLTableRowElement {
         let { coin, amount, id } = params;
         let { dataset } = this;
         dataset.id = id || dataset.id || '';
-        dataset.name = coin || dataset.name || '';
+        dataset.coin = coin || dataset.coin || '';
         dataset.amount = amount || dataset.amount || '';
         dataset.timeUpdate = Date.now();
-        this.priceRequest = this.getPrice(dataset.name);
+        this.priceRequest = this.getPrice(dataset.coin);
         this.priceRequest.then((price) => {
-            dataset.price = price;
-            dataset.totalPrice = (+dataset.amount * price).toFixed(2);
+            this.totalPrice = +(+dataset.amount * price).toFixed(2);
             return price;
         });
     }
@@ -27,16 +27,16 @@ export class CustomTR extends HTMLTableRowElement {
             .then(this.renderPriceAndTotalPrice)
             .then(() =>  document.dispatchEvent(
                 new CustomEvent('coin-added', 
-                { detail: { totalPrice: +this.dataset.totalPrice } }
+                { detail: { totalPrice: this.totalPrice } }
             )));
-        let { name, amount } = this.dataset;
+        let { coin, amount } = this.dataset;
         this.innerHTML = `
             <td class="coins__btn">
                 <button class="small-btn delete-btn" title="Удалить">
                     <img src="${ new URL('delete_btn/delete.png', import.meta.url) }" alt="Корзина">
                 </button>
             </td>
-            <td class="coins__name">${ name }</td>
+            <td class="coins__coin">${ coin }</td>
             <td class="coins__amount">${ amount }</td>
             <td class="coins__price"></td>
             <td class="coins__total-price"></td>
@@ -49,14 +49,14 @@ export class CustomTR extends HTMLTableRowElement {
     }
 
     disconnectedCallback() {
-        let { id, totalPrice } = this.dataset;
+        let { id } = this.dataset;
         
         connectDB((e)=> {
             let wallet = startTransaction(e, 'wallet', 'readwrite');
             wallet.delete(+id);
         });
         document.dispatchEvent(new CustomEvent('coin-deleted', {
-            detail: { totalPrice: totalPrice }
+            detail: { totalPrice: this.totalPrice }
         }));
     }
 
@@ -66,8 +66,8 @@ export class CustomTR extends HTMLTableRowElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        let { name: coin, amount } = this.dataset;
-        let coinTd = this.querySelector('.coins__name');
+        let { coin, amount } = this.dataset;
+        let coinTd = this.querySelector('.coins__coin');
         let amountTd = this.querySelector('.coins__amount');
         coinTd.textContent = coin;
         amountTd.textContent = amount;
@@ -80,9 +80,9 @@ export class CustomTR extends HTMLTableRowElement {
     }
 
     saveData() {
-        let { id, name, amount } = this.dataset;
+        let { id, coin, amount } = this.dataset;
         let obj = {
-            coin: name.toLowerCase(),
+            coin: coin.toLowerCase(),
             amount: +amount
         };
         id && (obj.id = +id);
@@ -115,7 +115,10 @@ export class CustomTR extends HTMLTableRowElement {
     }
 
     getPrice(coin) {
-        const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines'
+        if (coin === 'usdt') {
+            return Promise.resolve(1);
+        }
+        const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines';
         return fetch(`${URL_BARS_INFO}?symbol=${coin?.toUpperCase() }USDT&interval=1d&limit=1`)
             .then((response) => response.json())
             .then((data) => {
@@ -125,10 +128,8 @@ export class CustomTR extends HTMLTableRowElement {
 
     renderPriceAndTotalPrice = (price) => {
         this.querySelector('.coins__price').textContent = price;
-        this.dataset.price = price;
-        let totalPrice = +(price * +this.dataset.amount).toFixed(2);
-        this.querySelector('.coins__total-price').textContent = totalPrice;
-        this.dataset.totalPrice = totalPrice;
+        this.totalPrice = +(price * +this.dataset.amount).toFixed(2);
+        this.querySelector('.coins__total-price').textContent = this.totalPrice;
     }
 }
 

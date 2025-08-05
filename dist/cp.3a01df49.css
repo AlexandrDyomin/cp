@@ -219,7 +219,7 @@ input[name="coin"] {
   min-width: 300px;
 }
 
-.coins__name {
+.coins__coin {
   text-transform: uppercase;
 }
 

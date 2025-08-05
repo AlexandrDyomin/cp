@@ -806,7 +806,7 @@ coins.addEventListener('click', (0, _makeFuncFillModalJs.makeFuncFillModal)({
     modalClassName: 'new-coin-modal',
     rowTableClassName: 'coins__record',
     cellsClassNames: [
-        'coins__name',
+        'coins__coin',
         'coins__amount'
     ]
 }));
@@ -932,6 +932,7 @@ parcelHelpers.export(exports, "CustomTR", ()=>CustomTR);
 var _dbJs = require("./db.js");
 class CustomTR extends HTMLTableRowElement {
     priceRequest;
+    totalPrice;
     constructor(params = {}, requiredSaveToDb = false){
         super();
         this.requiredSaveToDb = requiredSaveToDb;
@@ -940,13 +941,12 @@ class CustomTR extends HTMLTableRowElement {
         let { coin, amount, id } = params;
         let { dataset } = this;
         dataset.id = id || dataset.id || '';
-        dataset.name = coin || dataset.name || '';
+        dataset.coin = coin || dataset.coin || '';
         dataset.amount = amount || dataset.amount || '';
         dataset.timeUpdate = Date.now();
-        this.priceRequest = this.getPrice(dataset.name);
+        this.priceRequest = this.getPrice(dataset.coin);
         this.priceRequest.then((price)=>{
-            dataset.price = price;
-            dataset.totalPrice = (+dataset.amount * price).toFixed(2);
+            this.totalPrice = +(+dataset.amount * price).toFixed(2);
             return price;
         });
     }
@@ -954,17 +954,17 @@ class CustomTR extends HTMLTableRowElement {
         this.requiredSaveToDb && this.saveData();
         this.priceRequest.then(this.renderPriceAndTotalPrice).then(()=>document.dispatchEvent(new CustomEvent('coin-added', {
                 detail: {
-                    totalPrice: +this.dataset.totalPrice
+                    totalPrice: this.totalPrice
                 }
             })));
-        let { name, amount } = this.dataset;
+        let { coin, amount } = this.dataset;
         this.innerHTML = `
             <td class="coins__btn">
                 <button class="small-btn delete-btn" title="\u{423}\u{434}\u{430}\u{43B}\u{438}\u{442}\u{44C}">
                     <img src="${new URL(require("5e74e848984717ab"))}" alt="\u{41A}\u{43E}\u{440}\u{437}\u{438}\u{43D}\u{430}">
                 </button>
             </td>
-            <td class="coins__name">${name}</td>
+            <td class="coins__coin">${coin}</td>
             <td class="coins__amount">${amount}</td>
             <td class="coins__price"></td>
             <td class="coins__total-price"></td>
@@ -976,14 +976,14 @@ class CustomTR extends HTMLTableRowElement {
         `;
     }
     disconnectedCallback() {
-        let { id, totalPrice } = this.dataset;
+        let { id } = this.dataset;
         (0, _dbJs.connectDB)((e)=>{
             let wallet = (0, _dbJs.startTransaction)(e, 'wallet', 'readwrite');
             wallet.delete(+id);
         });
         document.dispatchEvent(new CustomEvent('coin-deleted', {
             detail: {
-                totalPrice: totalPrice
+                totalPrice: this.totalPrice
             }
         }));
     }
@@ -994,8 +994,8 @@ class CustomTR extends HTMLTableRowElement {
     }
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        let { name: coin, amount } = this.dataset;
-        let coinTd = this.querySelector('.coins__name');
+        let { coin, amount } = this.dataset;
+        let coinTd = this.querySelector('.coins__coin');
         let amountTd = this.querySelector('.coins__amount');
         coinTd.textContent = coin;
         amountTd.textContent = amount;
@@ -1005,9 +1005,9 @@ class CustomTR extends HTMLTableRowElement {
         setTimeout(()=>this.style.animation = '', 3000);
     }
     saveData() {
-        let { id, name, amount } = this.dataset;
+        let { id, coin, amount } = this.dataset;
         let obj = {
-            coin: name.toLowerCase(),
+            coin: coin.toLowerCase(),
             amount: +amount
         };
         id && (obj.id = +id);
@@ -1038,6 +1038,7 @@ class CustomTR extends HTMLTableRowElement {
         (0, _dbJs.connectDB)(saveCallback);
     }
     getPrice(coin) {
+        if (coin === 'usdt') return Promise.resolve(1);
         const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines';
         return fetch(`${URL_BARS_INFO}?symbol=${coin?.toUpperCase()}USDT&interval=1d&limit=1`).then((response)=>response.json()).then((data)=>{
             return +parseFloat(data[0][4]).toFixed(2);
@@ -1045,10 +1046,8 @@ class CustomTR extends HTMLTableRowElement {
     }
     renderPriceAndTotalPrice = (price)=>{
         this.querySelector('.coins__price').textContent = price;
-        this.dataset.price = price;
-        let totalPrice = +(price * +this.dataset.amount).toFixed(2);
-        this.querySelector('.coins__total-price').textContent = totalPrice;
-        this.dataset.totalPrice = totalPrice;
+        this.totalPrice = +(price * +this.dataset.amount).toFixed(2);
+        this.querySelector('.coins__total-price').textContent = this.totalPrice;
     };
 }
 customElements.define('custom-tr', CustomTR, {
