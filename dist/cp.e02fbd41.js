@@ -910,6 +910,7 @@ function collectData(fields, ...excludeNames) {
     ].reduce((acc, el)=>{
         if (excludeNames.includes(el.name)) return acc;
         let value = el.type === 'number' ? +el.value : el.value.trim();
+        if (el.id === 'pair') value = el.value.toLowerCase();
         value && (acc[el.name] = value);
         return acc;
     }, {});
@@ -1116,14 +1117,50 @@ function updateRow(target, obj) {
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7dXRY":[function(require,module,exports,__globalThis) {
+var _db = require("../db");
+var _updateCoin = require("../updateCoin");
 let table = document.querySelector('.coins') || document.querySelector('.transactions');
 table.addEventListener('click', deleteRow);
 function deleteRow(e) {
     if (!e.target.closest('.delete-btn')) return;
     let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
+    if (record.className === 'transactions__record') {
+        (0, _db.connectDB)(recalcWallet);
+        function recalcWallet(req) {
+            let coins = record.dataset.pair.split('/');
+            if (record.dataset.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+                (0, _updateCoin.updateCoin)(req, coins[0], -1 * +record.dataset.amount);
+                (0, _updateCoin.updateCoin)(req, coins[1], +record.dataset.total);
+            }
+            if (record.dataset.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+                (0, _updateCoin.updateCoin)(req, coins[0], +record.dataset.amount);
+                (0, _updateCoin.updateCoin)(req, coins[1], -1 * +record.dataset.total);
+            }
+        }
+    }
     record.remove();
 }
 
-},{}]},["kxwl6","jOXmm"], "jOXmm", "parcelRequire8123", {}, "./", "/")
+},{"../db":"9GBZZ","../updateCoin":"ctA4E"}],"ctA4E":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateCoin", ()=>updateCoin);
+var _db = require("./db");
+function updateCoin(req, coin, delta) {
+    let wallet = (0, _db.startTransaction)(req, 'wallet', 'readwrite');
+    let coinIndex = wallet.index('coinIdx');
+    let getRequest = coinIndex.get(coin);
+    getRequest.onsuccess = ()=>{
+        let result = getRequest.result;
+        if (result) result.amount += delta;
+        else result = {
+            coin,
+            amount: delta
+        };
+        return wallet.put(result);
+    };
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./db":"9GBZZ"}]},["kxwl6","jOXmm"], "jOXmm", "parcelRequire8123", {}, "./", "/")
 
 //# sourceMappingURL=cp.e02fbd41.js.map

@@ -728,7 +728,11 @@ function recalcWallet(e) {
                 let getRequest = coinIndex.get(coin);
                 getRequest.onsuccess = ()=>{
                     let result = getRequest.result;
-                    result.amount += delta;
+                    if (result) result.amount += delta;
+                    else result = {
+                        coin,
+                        amount: delta
+                    };
                     let updateRequest = wallet.put(result);
                     updateRequest.onsuccess = ()=>resolve(updateRequest);
                     updateRequest.onerror = ()=>reject(updateRequest.error);
@@ -793,6 +797,8 @@ var _transactionRowJs = require("../transaction-row.js");
 var _colletcDataJs = require("../modal/colletcData.js");
 var _renderRowsJs = require("../renderRows.js");
 var _updateRowJs = require("../update_row.js");
+var _dbJs = require("../db.js");
+var _updateCoinJs = require("../updateCoin.js");
 let amountField = (0, _modalJs.modal).querySelector('input[name=amount]');
 let priceField = (0, _modalJs.modal).querySelector('input[name=price]');
 let totalField = (0, _modalJs.modal).querySelector('input[name=total]');
@@ -800,16 +806,27 @@ let table = document.querySelector('.transactions');
 (0, _modalJs.modal).addEventListener('input', calcTotal);
 (0, _modalJs.saveBtn).addEventListener('click', ()=>{
     let action = (0, _modalJs.modal).dataset.action;
-    saveData(action)();
+    let data = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields));
+    saveData(action, data)();
+    if (action === 'add') (0, _dbJs.connectDB)((req)=>{
+        let coins = data.pair.split('/');
+        if (data.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+            (0, _updateCoinJs.updateCoin)(req, coins[0], +data.amount);
+            (0, _updateCoinJs.updateCoin)(req, coins[1], -1 * +data.total);
+        }
+        if (data.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+            (0, _updateCoinJs.updateCoin)(req, coins[0], -1 * +data.amount);
+            (0, _updateCoinJs.updateCoin)(req, coins[1], +data.total);
+        }
+    });
     (0, _modalJs.modal).close();
 });
-function saveData(action) {
-    let obj = (0, _colletcDataJs.collectData)((0, _modalJs.modalFields));
+function saveData(action, data) {
     let actions = {
         add: ()=>(0, _renderRowsJs.renderRows)(table, [
-                obj
+                data
             ], (item)=>new (0, _transactionRowJs.CustomBody)(item, true)),
-        edit: ()=>(0, _updateRowJs.updateRow)(table.querySelector(`.transactions__record[data-id="${obj.id}"]`), obj)
+        edit: ()=>(0, _updateRowJs.updateRow)(table.querySelector(`.transactions__record[data-id="${data.id}"]`), data)
     };
     return actions[action];
 }
@@ -823,7 +840,7 @@ function calcTotal(e) {
     totalField.value = total;
 }
 
-},{"./../modal/modal.js":"h7IJc","../transaction-row.js":"6vKYW","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR","../update_row.js":"dIDKc"}],"h7IJc":[function(require,module,exports,__globalThis) {
+},{"./../modal/modal.js":"h7IJc","../transaction-row.js":"6vKYW","../modal/colletcData.js":"dZvxN","../renderRows.js":"bBlNR","../update_row.js":"dIDKc","../db.js":"9GBZZ","../updateCoin.js":"ctA4E"}],"h7IJc":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "modal", ()=>modal);
@@ -923,66 +940,68 @@ class CustomBody extends HTMLTableSectionElement {
     }
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        if (name === 'data-time-update') {
-            (0, _dbJs.connectDB)(dispatchTransactionChangedEvent.bind(this));
-            function dispatchTransactionChangedEvent(req) {
-                let transactions = (0, _dbJs.startTransaction)(req, 'transactions', 'readonly');
-                let getRequest = transactions.get(+this.dataset.id);
-                getRequest.onsuccess = ()=>{
-                    let newData = {
-                        pair: this.dataset.pair,
-                        transactionType: this.dataset.transactionType,
-                        amount: +this.dataset.amount,
-                        total: +this.dataset.total
-                    };
-                    let result = getRequest.result;
-                    let oldData = {
-                        pair: result.pair,
-                        transactionType: result.transactionType,
-                        amount: result.amount,
-                        total: result.price * result.amount
-                    };
-                    document.dispatchEvent(new CustomEvent('transaction-changed', {
-                        detail: {
-                            oldData,
-                            newData
-                        }
-                    }));
+        (0, _dbJs.connectDB)(dispatchTransactionChangedEvent.bind(this));
+        function dispatchTransactionChangedEvent(req) {
+            let transactions = (0, _dbJs.startTransaction)(req, 'transactions', 'readonly');
+            let getRequest = transactions.get(+this.dataset.id);
+            getRequest.onsuccess = ()=>{
+                let newData = {
+                    pair: this.dataset.pair,
+                    transactionType: this.dataset.transactionType,
+                    amount: +this.dataset.amount,
+                    total: +this.dataset.total
                 };
-            }
-            this.saveData();
-            let datasetNames = [
-                'date',
-                'pair',
-                'transactionType',
-                'amount',
-                'price',
-                'total'
-            ];
-            [
-                '.transactions__date time',
-                '.transactions__pair',
-                '.transactions__type',
-                '.transactions__amount',
-                '.transactions__price',
-                '.transactions__total-price'
-            ].forEach((selector, i)=>{
-                let td = this.querySelector(selector);
-                if (selector === '.transactions__date time') {
-                    td.datetime = this.dataset.date;
-                    td.textContent = this.formatDate(this.dataset.date);
-                    return;
-                }
-                td.textContent = this.dataset[datasetNames[i]];
-            });
-            this.style.animation = "backlight 3s";
-            this.firstElementChild.style.animation = "colorlight 3s";
-            setTimeout(()=>{
-                this.firstElementChild.style.animation = '';
-                this.style.animation = '';
-            }, 3000);
-            return;
+                let result = getRequest.result;
+                let oldData = {
+                    pair: result.pair,
+                    transactionType: result.transactionType,
+                    amount: result.amount,
+                    total: result.price * result.amount
+                };
+                document.dispatchEvent(new CustomEvent('transaction-changed', {
+                    detail: {
+                        oldData,
+                        newData
+                    }
+                }));
+            };
         }
+        this.saveData();
+        let datasetNames = [
+            'date',
+            'pair',
+            'transactionType',
+            'amount',
+            'price',
+            'total'
+        ];
+        [
+            '.transactions__date time',
+            '.transactions__pair',
+            '.transactions__type',
+            '.transactions__amount',
+            '.transactions__price',
+            '.transactions__total-price'
+        ].forEach((selector, i)=>{
+            let td = this.querySelector(selector);
+            if (selector === '.transactions__date time') {
+                td.datetime = this.dataset.date;
+                td.textContent = this.formatDate(this.dataset.date);
+                return;
+            }
+            if (selector === '.transactions__type') {
+                let modifierTransactionType = this.dataset.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430" ? 'transactions__type_green' : 'transactions__type_red';
+                td.className = 'transactions__type ' + modifierTransactionType;
+            }
+            td.textContent = this.dataset[datasetNames[i]];
+        });
+        this.style.animation = "backlight 3s";
+        this.firstElementChild.style.animation = "colorlight 3s";
+        setTimeout(()=>{
+            this.firstElementChild.style.animation = '';
+            this.style.animation = '';
+        }, 3000);
+        return;
     }
     formatDate(dateString) {
         const date = new Date(dateString);
@@ -1081,6 +1100,7 @@ function collectData(fields, ...excludeNames) {
     ].reduce((acc, el)=>{
         if (excludeNames.includes(el.name)) return acc;
         let value = el.type === 'number' ? +el.value : el.value.trim();
+        if (el.id === 'pair') value = el.value.toLowerCase();
         value && (acc[el.name] = value);
         return acc;
     }, {});
@@ -1105,7 +1125,27 @@ function updateRow(target, obj) {
     target.dataset.timeUpdate = Date.now();
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"8ekrc":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"ctA4E":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateCoin", ()=>updateCoin);
+var _db = require("./db");
+function updateCoin(req, coin, delta) {
+    let wallet = (0, _db.startTransaction)(req, 'wallet', 'readwrite');
+    let coinIndex = wallet.index('coinIdx');
+    let getRequest = coinIndex.get(coin);
+    getRequest.onsuccess = ()=>{
+        let result = getRequest.result;
+        if (result) result.amount += delta;
+        else result = {
+            coin,
+            amount: delta
+        };
+        return wallet.put(result);
+    };
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","./db":"9GBZZ"}],"8ekrc":[function(require,module,exports,__globalThis) {
 customElements.define('custom-nav', class extends HTMLElement {
     connectedCallback() {
         let activeLink = this.dataset.activeLink;
@@ -1217,14 +1257,30 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7dXRY":[function(require,module,exports,__globalThis) {
+var _db = require("../db");
+var _updateCoin = require("../updateCoin");
 let table = document.querySelector('.coins') || document.querySelector('.transactions');
 table.addEventListener('click', deleteRow);
 function deleteRow(e) {
     if (!e.target.closest('.delete-btn')) return;
     let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
+    if (record.className === 'transactions__record') {
+        (0, _db.connectDB)(recalcWallet);
+        function recalcWallet(req) {
+            let coins = record.dataset.pair.split('/');
+            if (record.dataset.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+                (0, _updateCoin.updateCoin)(req, coins[0], -1 * +record.dataset.amount);
+                (0, _updateCoin.updateCoin)(req, coins[1], +record.dataset.total);
+            }
+            if (record.dataset.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+                (0, _updateCoin.updateCoin)(req, coins[0], +record.dataset.amount);
+                (0, _updateCoin.updateCoin)(req, coins[1], -1 * +record.dataset.total);
+            }
+        }
+    }
     record.remove();
 }
 
-},{}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
+},{"../db":"9GBZZ","../updateCoin":"ctA4E"}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
 
 //# sourceMappingURL=transactions.fb7a4751.js.map

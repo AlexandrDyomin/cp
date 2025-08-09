@@ -66,14 +66,20 @@ function recalcWallet(e) {
                 let getRequest = coinIndex.get(coin);
                 getRequest.onsuccess = () => {
                     let result = getRequest.result;
-                    result.amount += delta;
+                    if (result) {
+                        result.amount += delta;
+                    } else {
+                        result = { 
+                            coin,
+                            amount: delta
+                        };
+                    }
                     let updateRequest = wallet.put(result);
                     updateRequest.onsuccess = () => resolve(updateRequest)
                     updateRequest.onerror = () => reject(updateRequest.error);
                 }
             });
         }
-    }
-    
+    }   
 }
 

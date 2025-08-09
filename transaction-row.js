@@ -76,63 +76,66 @@ export class CustomBody extends HTMLTableSectionElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (oldValue === null) return;
-        if (name === 'data-time-update') {
-            connectDB(dispatchTransactionChangedEvent.bind(this));
-            function dispatchTransactionChangedEvent(req) {
-                let transactions = startTransaction(req, 'transactions', 'readonly');
-                let getRequest = transactions.get(+this.dataset.id);
-                getRequest.onsuccess = () => {
-                    let newData = {
-                        pair: this.dataset.pair,
-                        transactionType: this.dataset.transactionType,
-                        amount: +this.dataset.amount,
-                        total: +this.dataset.total
-                    };
+        connectDB(dispatchTransactionChangedEvent.bind(this));
+        function dispatchTransactionChangedEvent(req) {
+            let transactions = startTransaction(req, 'transactions', 'readonly');
+            let getRequest = transactions.get(+this.dataset.id);
+            getRequest.onsuccess = () => {
+                let newData = {
+                    pair: this.dataset.pair,
+                    transactionType: this.dataset.transactionType,
+                    amount: +this.dataset.amount,
+                    total: +this.dataset.total
+                };
 
-                    let result = getRequest.result;
-                    let oldData = {
-                        pair: result.pair,
-                        transactionType: result.transactionType,
-                        amount: result.amount,
-                        total: result.price * result.amount
-                    };
-                    document.dispatchEvent(
-                        new CustomEvent(
-                            'transaction-changed', 
-                            { detail: { oldData, newData } }
-                        )
-                    );
-                }
+                let result = getRequest.result;
+                let oldData = {
+                    pair: result.pair,
+                    transactionType: result.transactionType,
+                    amount: result.amount,
+                    total: result.price * result.amount
+                };
+                document.dispatchEvent(
+                    new CustomEvent(
+                        'transaction-changed', 
+                        { detail: { oldData, newData } }
+                    )
+                );
             }
-
-            this.saveData();
-            let datasetNames = ['date', 'pair', 'transactionType', 'amount', 'price', 'total'];
-            ['.transactions__date time', 
-                '.transactions__pair', 
-                '.transactions__type', 
-                '.transactions__amount', 
-                '.transactions__price', 
-                '.transactions__total-price']
-                .forEach((selector, i) => {
-                    let td = this.querySelector(selector);
-                    if (selector === '.transactions__date time') {
-                        td.datetime = this.dataset.date;
-                        td.textContent = this.formatDate(this.dataset.date);
-                        return;
-                    }
-                    td.textContent = this.dataset[datasetNames[i]];
-                });
-    
-            this.style.animation = "backlight 3s";
-            this.firstElementChild.style.animation = "colorlight 3s";
-    
-            setTimeout(() => {
-                this.firstElementChild.style.animation = '';
-                this.style.animation = '';
-            }
-            , 3000);
-            return;
         }
+
+        this.saveData();
+        let datasetNames = ['date', 'pair', 'transactionType', 'amount', 'price', 'total'];
+        ['.transactions__date time', 
+            '.transactions__pair', 
+            '.transactions__type', 
+            '.transactions__amount', 
+            '.transactions__price', 
+            '.transactions__total-price']
+            .forEach((selector, i) => {
+                let td = this.querySelector(selector);
+                if (selector === '.transactions__date time') {
+                    td.datetime = this.dataset.date;
+                    td.textContent = this.formatDate(this.dataset.date);
+                    return;
+                }
+                if (selector === '.transactions__type') {
+                    let modifierTransactionType = (this.dataset.transactionType === 'Покупка') ? 
+                    'transactions__type_green' : 'transactions__type_red';
+                    td.className = 'transactions__type ' + modifierTransactionType;
+                }
+                td.textContent = this.dataset[datasetNames[i]];
+            });
+
+        this.style.animation = "backlight 3s";
+        this.firstElementChild.style.animation = "colorlight 3s";
+
+        setTimeout(() => {
+            this.firstElementChild.style.animation = '';
+            this.style.animation = '';
+        }
+        , 3000);
+        return;
     }
 
     formatDate(dateString) {
