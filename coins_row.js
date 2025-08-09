@@ -71,10 +71,11 @@ export class CustomTR extends HTMLTableRowElement {
         let amountTd = this.querySelector('.coins__amount');
         coinTd.textContent = coin;
         amountTd.textContent = amount;
+        this.priceRequest = this.getPrice(coin);
+        this.priceRequest.then(this.renderPriceAndTotalPrice);
+        this.priceRequest.then(() => document.dispatchEvent(new CustomEvent('coin-changed')));
+        
         this.saveData();
-        this.getPrice(coin)
-            .then(this.renderPriceAndTotalPrice)
-            .then(() => document.dispatchEvent(new CustomEvent('coin-changed')));
         this.style.animation = "backlight 3s";
         setTimeout(() => this.style.animation = '', 3000);
     }

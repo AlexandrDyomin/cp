@@ -7,6 +7,7 @@ import './delete_btn/delete_btn.js';
 import { connectDB, makeReadAllRecords, startTransaction } from './db.js';
 import { renderRows } from './renderRows.js';
 import { CustomBody } from './transaction-row.js';
+import { updateCoin } from './updateCoin.js';
 
 let table = document.querySelector('.transactions');
 connectDB(makeReadAllRecords('transactions', (data) => {
@@ -14,6 +15,22 @@ connectDB(makeReadAllRecords('transactions', (data) => {
 }));
 
 document.addEventListener('transaction-changed', recalcWallet);
+document.addEventListener('transaction-deleted', (e) => {
+    let data = e.detail;
+    connectDB(recalcWallet);
+    function recalcWallet(req) {
+        let coins = data.pair.split('/');
+        if (data.transactionType === 'Покупка') {
+            updateCoin(req, coins[0], -1 * +data.amount);
+            updateCoin(req, coins[1], +data.total);
+        }   
+        if (data.transactionType === 'Продажа') {
+            updateCoin(req, coins[0], +data.amount);
+            updateCoin(req, coins[1], -1 * +data.total);
+        }
+    }
+});
+
 
 function recalcWallet(e) {
     let { oldData, newData } = e.detail;

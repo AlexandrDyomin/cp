@@ -1,4 +1,5 @@
 import { startTransaction } from "./db";
+
 export function updateCoin(req, coin, delta) {
     let wallet = startTransaction(req, 'wallet', 'readwrite');
     let coinIndex = wallet.index('coinIdx');

@@ -1,7 +1,6 @@
 import { connectDB, startTransaction } from "./db.js";
 
 export class CustomBody extends HTMLTableSectionElement {
-
     constructor(params = {}, requiredSaveToDb = false) {
         super();
         this.requiredSaveToDb = requiredSaveToDb;
@@ -68,6 +67,8 @@ export class CustomBody extends HTMLTableSectionElement {
             let transactions = startTransaction(e, 'transactions', 'readwrite');
             transactions.delete(+id);
         });
+
+        document.dispatchEvent(new CustomEvent('transaction-deleted', { detail: this.dataset}));
     }
 
     static get observedAttributes() {

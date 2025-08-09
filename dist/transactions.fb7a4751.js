@@ -675,11 +675,27 @@ var _transactionRowJs = require("./transaction-row.js");
 var _deleteBtnJs = require("./delete_btn/delete_btn.js");
 var _dbJs = require("./db.js");
 var _renderRowsJs = require("./renderRows.js");
+var _updateCoinJs = require("./updateCoin.js");
 let table = document.querySelector('.transactions');
 (0, _dbJs.connectDB)((0, _dbJs.makeReadAllRecords)('transactions', (data)=>{
     (0, _renderRowsJs.renderRows)(table, data, (item)=>new (0, _transactionRowJs.CustomBody)(item));
 }));
 document.addEventListener('transaction-changed', recalcWallet);
+document.addEventListener('transaction-deleted', (e)=>{
+    let data = e.detail;
+    (0, _dbJs.connectDB)(recalcWallet);
+    function recalcWallet(req) {
+        let coins = data.pair.split('/');
+        if (data.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
+            (0, _updateCoinJs.updateCoin)(req, coins[0], -1 * +data.amount);
+            (0, _updateCoinJs.updateCoin)(req, coins[1], +data.total);
+        }
+        if (data.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
+            (0, _updateCoinJs.updateCoin)(req, coins[0], +data.amount);
+            (0, _updateCoinJs.updateCoin)(req, coins[1], -1 * +data.total);
+        }
+    }
+});
 function recalcWallet(e) {
     let { oldData, newData } = e.detail;
     (0, _dbJs.connectDB)(updateWallet);
@@ -742,7 +758,7 @@ function recalcWallet(e) {
     }
 }
 
-},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW","./db.js":"9GBZZ","./renderRows.js":"bBlNR","./delete_btn/delete_btn.js":"7dXRY"}],"7Yuto":[function(require,module,exports,__globalThis) {
+},{"./add_transaction_btn/add_transaction_btn.js":"7Yuto","./transaction_modal/transaction_modal.js":"dwh51","./navigation/navigation.js":"8ekrc","./edit_btn/handleClickEditTransactionBtn.js":"epAFL","./transaction-row.js":"6vKYW","./db.js":"9GBZZ","./renderRows.js":"bBlNR","./delete_btn/delete_btn.js":"7dXRY","./updateCoin.js":"ctA4E"}],"7Yuto":[function(require,module,exports,__globalThis) {
 var _makeFuncOpenModalWindowJs = require("../make_func_open_modal_window.js");
 let modal = document.querySelector('.transaction');
 let addTransactionBtn = document.querySelector('.add-transaction');
@@ -932,6 +948,9 @@ class CustomBody extends HTMLTableSectionElement {
             let transactions = (0, _dbJs.startTransaction)(e, 'transactions', 'readwrite');
             transactions.delete(+id);
         });
+        document.dispatchEvent(new CustomEvent('transaction-deleted', {
+            detail: this.dataset
+        }));
     }
     static get observedAttributes() {
         return [
@@ -1257,30 +1276,14 @@ function makeFuncFillModal({ modalClassName, rowTableClassName, cellsClassNames 
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT"}],"7dXRY":[function(require,module,exports,__globalThis) {
-var _db = require("../db");
-var _updateCoin = require("../updateCoin");
 let table = document.querySelector('.coins') || document.querySelector('.transactions');
 table.addEventListener('click', deleteRow);
 function deleteRow(e) {
     if (!e.target.closest('.delete-btn')) return;
     let record = e.target.closest('.coins__record') || e.target.closest('.transactions__record');
-    if (record.className === 'transactions__record') {
-        (0, _db.connectDB)(recalcWallet);
-        function recalcWallet(req) {
-            let coins = record.dataset.pair.split('/');
-            if (record.dataset.transactionType === "\u041F\u043E\u043A\u0443\u043F\u043A\u0430") {
-                (0, _updateCoin.updateCoin)(req, coins[0], -1 * +record.dataset.amount);
-                (0, _updateCoin.updateCoin)(req, coins[1], +record.dataset.total);
-            }
-            if (record.dataset.transactionType === "\u041F\u0440\u043E\u0434\u0430\u0436\u0430") {
-                (0, _updateCoin.updateCoin)(req, coins[0], +record.dataset.amount);
-                (0, _updateCoin.updateCoin)(req, coins[1], -1 * +record.dataset.total);
-            }
-        }
-    }
     record.remove();
 }
 
-},{"../db":"9GBZZ","../updateCoin":"ctA4E"}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
+},{}]},["dLzN8","cYne2"], "cYne2", "parcelRequire8123", {}, "./", "/")
 
 //# sourceMappingURL=transactions.fb7a4751.js.map
