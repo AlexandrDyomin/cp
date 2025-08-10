@@ -1,3 +1,7 @@
 input[name=pair] {
     text-transform: uppercase;
 }
+
+input[name=pair]::placeholder {
+    text-transform: lowercase;
+}

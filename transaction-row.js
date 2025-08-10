@@ -28,11 +28,11 @@ export class CustomBody extends HTMLTableSectionElement {
                 <td colspan="2">
                     <div class="transactions__date">
                         <button class="small-btn delete-btn" title="Удалить">
-                            <img src="${ new URL('delete_btn/delete.png', import.meta.url) } alt="Корзина">
+                            <img src="${ new URL('delete_btn/delete.png', import.meta.url) }" alt="Корзина">
                         </button>
                         <time datetime=${ date }>${ this.formatDate(date) }</time>
                         <button class="small-btn edit-btn" title="Редактировать">
-                            <img src="${ new URL('edit_btn/edit.png', import.meta.url) } alt="Ручка перьевая">
+                            <img src="${ new URL('edit_btn/edit.png', import.meta.url) }" alt="Ручка перьевая">
                         </button>
                     </div>
                 </td>

@@ -9,6 +9,10 @@ modal.addEventListener('input', () => {
             if (el.type === 'number' && +el.value <= 0) {
                 return false;
             }
+            if (el.name === 'pair') {
+                let coins = el.value.split('/');
+                return coins.length === 2 && coins[0].length && coins[1].length;
+            }
             return !!el.value;
         })
     ) {

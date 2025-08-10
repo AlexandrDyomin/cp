@@ -11,22 +11,22 @@ customElements.define('custom-nav', class extends HTMLElement {
                 <ul class="navigation__list">
                     <li>
                         <a class="navigation__link" href="${dir}/" title="Кошелек">
-                            <img class="navigation__img" src="${new URL('wallet.png', import.meta.url) }" alt="Кошелёк">
+                            <img class="navigation__img" src="${ new URL('wallet.png', import.meta.url) }" alt="Кошелёк">
                         </a>
                     </li>
                     <li>
                         <a class="navigation__link" href="${dir}/transactions" title="Транзакции">
-                            <img class="navigation__img" src="${new URL('ledger.png', import.meta.url) }" alt="Бухгалтерская книга">
+                            <img class="navigation__img" src="${ new URL('ledger.png', import.meta.url) }" alt="Бухгалтерская книга">
                         </a>
                     </li>
                     <li>
                         <a class="navigation__link" href="${dir}/realizedPnL" title="Реализованный PnL">
-                            <img class="navigation__img" src="${new URL('profit.png', import.meta.url) }" alt="Рука с мешечком для денег">
+                            <img class="navigation__img" src="${ new URL('profit.png', import.meta.url) }" alt="Рука с мешечком для денег">
                         </a>
                     </li>
                     <li>
                         <a class="navigation__link" href="${dir}/unrealizedPnL" title="Нереализованный PnL">
-                            <img class="navigation__img" src="${new URL('analytics.png', import.meta.url) }" alt="Гистограмма">
+                            <img class="navigation__img" src="${ new URL('analytics.png', import.meta.url) }" alt="Гистограмма">
                         </a>
                     </li>
                 </ul>
