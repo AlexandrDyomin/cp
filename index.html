@@ -1,53 +1,43 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="index.js" defer></script>
-    <title>Кошелек</title>
-</head>
-<body>
-    <div class="app">
-        <div class="container">
+<!DOCTYPE html><html lang=ru><script type=importmap>{"imports":{"5IJ5w":"./cp/ledger.1428c801.png","8ksLu":"./cp/delete.93bce71f.png","JhyDX":"./cp/wallet.192199eb.png","caGxo":"./cp/analytics.632d48f5.png","cm9mC":"./cp/edit.31646808.png","i5U7f":"./cp/profit.28935a0b.png"}}</script><meta charset=UTF-8><meta name=viewport content="width=device-width, initial-scale=1.0"><link rel=stylesheet href=cp/cp.38c26768.css><script type=module src=cp/cp.03f86497.js defer></script><title>Кошелек</title><body>
+    <div class=app>
+        <div class=container>
             <h1>Кошелек</h1>
-            <div class="balance">
-                Баланс: <span class="balance__value"></span>
+            <div class=balance>
+                Баланс: <span class=balance__value></span>
             </div>
-            <div style="overflow: auto; padding-bottom: 10px;">
-                <table class="coins">
+            <div style=padding-bottom:10px;overflow:auto>
+                <table class=coins>
                     <thead>
                         <tr>
                             <th></th>
                             <th>Монета</th>
                             <th>Количество</th>
-                            <th style="min-width: 105px;">Цена</th>
-                            <th style="min-width: 105px;">Стоимость</th>
+                            <th style=min-width:105px>Цена</th>
+                            <th style=min-width:105px>Стоимость</th>
                             <th></th>
                         </tr>
                     </thead>
                 </table>
             </div>
-            <button class="square-btn deposit" title="Внести криптовалюту">
-                <img class="navigation__img" src="deposit.png" alt="Внести криптовалюту">
+            <button class="deposit square-btn" title="Внести криптовалюту">
+                <img class=navigation__img src=cp/deposit.dd59119b.png alt="Внести криптовалюту">
             </button>
-            <dialog class="new-coin-modal modal" data-action="">
-                <div class="modal__wrap">
-                    <input type="number" hidden name="id">
-                    <label for="coin">Монета</label>
-                    <input type="text" name="coin" id="coin">
-                    <label for="amount">Количество</label>
-                    <input type="number" name="amount" id="amount">
-                    <div class="modal__buttons">
+            <dialog class="modal new-coin-modal" data-action>
+                <div class=modal__wrap>
+                    <input type=number hidden name=id>
+                    <label for=coin>Монета</label>
+                    <input name=coin id=coin>
+                    <label for=amount>Количество</label>
+                    <input type=number name=amount id=amount>
+                    <div class=modal__buttons>
                         <button class="modal-btn modal-btn_ok" disabled>Сохранить</button>
-                        <form method="dialog">
+                        <form method=dialog>
                             <button class="modal-btn modal-btn_close">Закрыть</button>
                         </form>
                     </div>
                 </div>
             </dialog>
-            <custom-nav data-active-link="1"></custom-nav>
+            <custom-nav data-active-link=1></custom-nav>
         </div>
     </div>
-</body>
-</html>
+
