@@ -13,7 +13,7 @@
     ],
     "scripts": {
         "dev": "parcel",
-        "build": "parcel build --no-source-maps --dist-dir build"
+        "build": "parcel build --no-source-maps --public-url /cp --dist-dir build"
     },
     "devDependencies": {
         "@parcel/compressor-brotli": "^2.15.4",
