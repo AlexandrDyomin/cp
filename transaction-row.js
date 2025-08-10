@@ -102,7 +102,7 @@ export class CustomBody extends HTMLTableSectionElement {
                         { detail: { oldData, newData } }
                     )
                 );
-            }
+            };
         }
 
         this.saveData();

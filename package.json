@@ -7,7 +7,9 @@
     "type": "module",
     "source": [
         "index.html",
-        "transactions.html"
+        "transactions.html",
+        "realizedPnL.html",
+        "unrealizedPnL.html"
     ],
     "scripts": {
         "dev": "parcel",

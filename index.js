@@ -23,13 +23,10 @@ function increaseBalance(e) {
     balanceValue.textContent = balance;
 }
 
-function recalcBalance() {
-    let cellsTotalPrice = document.querySelectorAll('.coins__total-price');
-    let balance = 0;
-    cellsTotalPrice.forEach((data) => balance = +((balance + +data.textContent)).toFixed(2));
-    balanceValue.textContent = balance;
+function recalcBalance(e) {
+    balanceValue.textContent = (+balanceValue.textContent + e.detail.delta).toFixed(2);
 }
 
 function decreaseBalance(e) {
-    balanceValue.textContent = (+balanceValue.textContent - +e.detail.totalPrice).toFixed(2);
+    balanceValue.textContent = (+balanceValue.textContent - e.detail.totalPrice).toFixed(2);
 }
