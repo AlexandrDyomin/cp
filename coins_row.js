@@ -1,4 +1,5 @@
 import { connectDB, startTransaction } from "./db.js";
+import { getPrice } from "./getPriceCoin.js";
 
 export class CustomTR extends HTMLTableRowElement {
     priceRequest;
@@ -14,7 +15,7 @@ export class CustomTR extends HTMLTableRowElement {
         dataset.coin = coin || dataset.coin || '';
         dataset.amount = amount || dataset.amount || '';
         dataset.timeUpdate = Date.now();
-        this.priceRequest = this.getPrice(dataset.coin);
+        this.priceRequest = getPrice(dataset.coin);
         this.priceRequest.then((price) => {
             this.totalPrice = +(+dataset.amount * price).toFixed(2);
             return price;
@@ -71,7 +72,7 @@ export class CustomTR extends HTMLTableRowElement {
         let amountTd = this.querySelector('.coins__amount');
         coinTd.textContent = coin;
         amountTd.textContent = amount;
-        this.priceRequest = this.getPrice(coin);
+        this.priceRequest = getPrice(coin);
         this.priceRequest.then((price) => {
             let total = +(price * +this.dataset.amount).toFixed(2);
             let delta = total - this.totalPrice;
@@ -117,18 +118,6 @@ export class CustomTR extends HTMLTableRowElement {
         };
 
         connectDB(saveCallback);   
-    }
-
-    getPrice(coin) {
-        if (coin === 'usdt') {
-            return Promise.resolve(1);
-        }
-        const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines';
-        return fetch(`${URL_BARS_INFO}?symbol=${coin?.toUpperCase() }USDT&interval=1d&limit=1`)
-            .then((response) => response.json())
-            .then((data) => {
-                return +parseFloat(data[0][4]).toFixed(2);
-            });
     }
 
     renderPriceAndTotalPrice = (price) => {
