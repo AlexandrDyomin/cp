@@ -3,7 +3,7 @@ import './deposit/deposit.js';
 import './edit_btn/handleClickEditBalanceBtn.js';
 import './new_coin_modal/new_coin_modal.js';
 import './delete_btn/delete_btn.js';
-import { connectDB, makeReadAllRecords } from './db.js';
+import { connectDB, makeReadAllRecords, readAllStores } from './db.js';
 import { renderRows } from './renderRows.js';
 import { CustomTR } from './coins_row.js';
 
@@ -30,3 +30,8 @@ function recalcBalance(e) {
 function decreaseBalance(e) {
     balanceValue.textContent = (+balanceValue.textContent - e.detail.totalPrice).toFixed(2);
 }
+
+connectDB(async (req) => {
+    let result = await readAllStores(req);
+    console.log(result)
+})

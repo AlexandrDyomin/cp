@@ -34,3 +34,28 @@ export function startTransaction(e, store, type) {
     let transaction = db.transaction(store, type);
     return transaction.objectStore(store);
 }
+
+export async function readAllStores(req) {
+    let db = req.target.result;
+    let storeNames = [...db.objectStoreNames];
+    let promises = storeNames.map((name) => {
+        return new Promise((resolve, reject) => {
+            let transaction = startTransaction(req, name, 'readonly');
+            let data = transaction.getAll();
+            data.onsuccess = () => {
+                resolve({[name]: data.result})
+            };
+            data.onerror = reject;
+
+
+        });
+    });
+    return Promise.all(promises)
+        .then((res) => {
+            return res.reduce((acc, item) => {
+                let storeName = Object.keys(item)[0];
+                acc[storeName] = item[storeName];
+                return acc;
+            }, {});
+        });
+}
