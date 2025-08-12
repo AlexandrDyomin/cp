@@ -46,8 +46,6 @@ export async function readAllStores(req) {
                 resolve({[name]: data.result})
             };
             data.onerror = reject;
-
-
         });
     });
     return Promise.all(promises)
@@ -58,4 +56,11 @@ export async function readAllStores(req) {
                 return acc;
             }, {});
         });
+}
+
+export function uploadData(req, data) {
+    for (let [key, value] of Object.entries(data)) {
+        let transaction = startTransaction(req, key, 'readwrite');
+        value.forEach((item) => transaction.add(item));
+    }
 }
