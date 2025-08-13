@@ -13,15 +13,22 @@ body {
     margin: 0;
 }
 
-button:focus-visible {
+header {
+    position: relative;
+}
+
+button:focus-visible,
+.download:focus-visible {
     outline-offset: 4px;
 }
 
-button:hover {
+button:hover,
+.download:hover {
     background: rgb(206, 206, 206);
 }
 
-button:active {
+button:active,
+.download:active {
     background: rgb(130, 130, 130);
 }
 
@@ -76,6 +83,7 @@ tr:first-child:hover {
     border-radius: 4px;
     background: white;
     cursor: pointer;
+    display: block;
 }
 
 .small-btn img {
@@ -87,6 +95,15 @@ tr:first-child:hover {
     width: 85%;
     object-position: 0px 1px;
 }
+
+
+.file-db {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 
 @keyframes backlight {
     from {

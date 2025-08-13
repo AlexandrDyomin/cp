@@ -10,9 +10,16 @@
 <body>
     <div class="app">
         <div class="container">
-            <h1>Кошелек</h1>
+                <h1>Кошелек</h1>
             <div class="balance">
                 Баланс: <span class="balance__value"></span>
+            </div>
+            <div class="file-db">
+                 <div class="upload" title="Загрузить файл БД">
+                    <input type="file">
+                    <span class="upload__btn small-btn">↑</span>
+                </div>
+                <a class="download small-btn" href="http://"  download="cp.json" title="Скачать файл БД">↓</a>
             </div>
             <div style="overflow: auto; padding-bottom: 10px;">
                 <table class="coins">
