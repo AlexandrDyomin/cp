@@ -1,5 +1,5 @@
 export function getPrice(coin) {
-        if (coin === 'usdt') {
+        if (coin.toLowerCase() === 'usdt') {
             return Promise.resolve(1);
         }
         const URL_BARS_INFO = 'https://api.binance.com/api/v1/klines';
