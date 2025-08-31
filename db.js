@@ -40,8 +40,8 @@ export async function readAllStores(req) {
     let storeNames = [...db.objectStoreNames];
     let promises = storeNames.map((name) => {
         return new Promise((resolve, reject) => {
-            let transaction = startTransaction(req, name, 'readonly');
-            let data = transaction.getAll();
+            let store = startTransaction(req, name, 'readonly');
+            let data = store.getAll();
             data.onsuccess = () => {
                 resolve({[name]: data.result})
             };
@@ -60,7 +60,14 @@ export async function readAllStores(req) {
 
 export function uploadData(req, data) {
     for (let [key, value] of Object.entries(data)) {
-        let transaction = startTransaction(req, key, 'readwrite');
-        value.forEach((item) => transaction.add(item));
+        let store = startTransaction(req, key, 'readwrite');
+        value.forEach((item) => store.add(item));
     }
+}
+
+export function clearStore(req, ...storeNames) {
+    storeNames.forEach((name) => {
+        let store = startTransaction(req, name, 'readwrite');
+        store.clear();
+    });
 }

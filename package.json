@@ -19,6 +19,7 @@
         "@parcel/compressor-brotli": "^2.15.4",
         "@parcel/compressor-gzip": "^2.15.4",
         "parcel": "^2.15.4",
+        "process": "^0.11.10",
         "sharp": "^0.33.5"
     }
 }

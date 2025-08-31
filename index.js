@@ -6,16 +6,55 @@ import './delete_btn/delete_btn.js';
 import { connectDB, makeReadAllRecords, readAllStores } from './db.js';
 import { renderRows } from './renderRows.js';
 import { CustomTR } from './coins_row.js';
-import { uploadData } from './db.js';
+import { uploadData, clearStore } from './db.js';
 
 let table = document.querySelector('.coins');
-connectDB(makeReadAllRecords('wallet', (data) => renderRows(table, data, (item) => new CustomTR(item))));
+connectDB(makeReadAllRecords('wallet', (data) => {
+    renderRows(table, data, (item) => new CustomTR(item))}
+));
 
 document.addEventListener('coin-added', increaseBalance);
 document.addEventListener('coin-changed', recalcBalance);
 document.addEventListener('coin-deleted', decreaseBalance);
 
 let balanceValue = document.querySelector('.balance__value');
+let downloadBtn = document.querySelector('.download');
+
+connectDB(async (req) => {
+    URL.revokeObjectURL(downloadBtn.href);
+    downloadBtn.href = URL.createObjectURL(await prepareData(req));
+    downloadBtn.addEventListener('click', saveDb);
+
+    function saveDb(e) {
+        connectDB(async (req) => {
+            downloadBtn.href = URL.createObjectURL(await prepareData(req));
+        });
+    }
+});
+
+async function prepareData(req) {
+    let result = await readAllStores(req);
+    result = JSON.stringify(result);
+    return new Blob([result], { type: 'application/json' });
+}
+
+let uploadBtn = document.querySelector('.upload');
+uploadBtn.addEventListener('click', () => uploadBtn.children[0].click());
+uploadBtn.addEventListener('change', handleClickUploadBtn);
+function handleClickUploadBtn(e) {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => { 
+        let data = JSON.parse(reader.result); 
+        connectDB((req) => {
+            clearStore(req, 'wallet', 'transactions');
+            uploadData(req, data);
+            document.location.reload();
+        });
+    }
+    reader.onerror = () => console.log(reader.error);
+}
 
 function increaseBalance(e) {
     let { totalPrice } = e.detail;
@@ -31,28 +70,3 @@ function recalcBalance(e) {
 function decreaseBalance(e) {
     balanceValue.textContent = (+balanceValue.textContent - e.detail.totalPrice).toFixed(2);
 }
-
-// connectDB(async (req) => {
-//     let result = await readAllStores(req);
-//     console.log(result)
-// })
-
-// let d = {
-//     wallet: [
-//         {coin: 'usdt', amount: -2, id: 133}
-//     ],
-//     transactions: [
-//         { date: '2025-08-14T18:16', 
-//             transactionType: 'Покупка',
-//             pair: 'crv/usdt', 
-//             amount: 1, 
-//             price: 2, 
-//             transactionType: "Покупка"
-//         }
-//     ]
-// }
-
-// connectDB((req) => {
-//     uploadData(req, d);
-//     console.log('done')
-// })
