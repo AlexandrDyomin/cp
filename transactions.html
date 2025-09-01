@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="cryptocurrency-portfolio-icon.png" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <link rel="prefetch" href="/index.html">
+    <link rel="prefetch" href="/realizedPnL.html">
+    <link rel="prefetch" href="/unrealizedPnL.html">
     <link rel="stylesheet" href="transactions.css">
     <script type="module" src="transactions.js" defer></script>
     <title>Транзакции</title>
@@ -11,6 +16,13 @@
     <div class="app">
         <div class="container">
             <h1>Транзакции</h1>
+            <div class="file-db">
+                 <div class="upload" title="Загрузить файл БД">
+                    <input type="file" accept="application/json">
+                    <span class="upload__btn small-btn">↑</span>
+                </div>
+                <a class="download small-btn"  download="cp.json" title="Скачать файл БД" tabindex="0">↓</a>
+            </div>
             <table class="transactions"></table>
             <button class="square-btn add-transaction" title="Добавить транзакцию"></button>
             <dialog class="transaction modal">

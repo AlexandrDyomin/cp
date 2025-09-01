@@ -8,6 +8,7 @@ import { connectDB, makeReadAllRecords, startTransaction } from './db.js';
 import { renderRows } from './renderRows.js';
 import { CustomBody } from './transaction-row.js';
 import { updateCoin } from './updateCoin.js';
+import './download_btn.js';
 
 let table = document.querySelector('.transactions');
 connectDB(makeReadAllRecords('transactions', (data) => {
