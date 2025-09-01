@@ -7,7 +7,7 @@
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "cryptocurrency-portfolio-icon.png",
+      "src": "cryptocurrency-portfolio-icon.webp",
       "type": "image/png",
       "sizes": "512x512"
     }
