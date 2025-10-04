@@ -10,8 +10,15 @@ import './download_btn.js';
 
 let table = document.querySelector('.coins');
 connectDB(makeReadAllRecords('wallet', (data) => {
-    renderRows(table, data, (item) => new CustomTR(item))}
-));
+    let sortedCoins = [...data].sort((a, b) => 
+        new Date(b.amount) - new Date(a.amount)
+    );
+    renderRows(
+        table, 
+        sortedCoins.filter(item => item.amount), 
+        (item) => new CustomTR(item)
+    );
+}));
 
 document.addEventListener('coin-added', increaseBalance);
 document.addEventListener('coin-changed', recalcBalance);

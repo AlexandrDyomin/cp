@@ -12,7 +12,14 @@ import './download_btn.js';
 
 let table = document.querySelector('.transactions');
 connectDB(makeReadAllRecords('transactions', (data) => {
-    renderRows(table, data, (item) => new CustomBody(item));
+    let sortedTransactions = [...data].sort((a, b) => 
+       new Date(b.date) - new Date(a.date)
+    );
+    renderRows(
+        table, 
+        sortedTransactions, 
+        (item) => new CustomBody(item)
+    );
 }));
 
 document.addEventListener('transaction-changed', recalcWallet);
