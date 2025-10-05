@@ -1,16 +1,26 @@
 import './navigation/navigation.js';
 import './download_btn.js';
-
 import { getTradingStatistics } from './getTradingStatistics.js';
+import { renderRows } from './renderRows.js';
+import { CustomPnLRow } from './Pairs_row.js';
+
+let table = document.querySelector('.pairs');
 
 (async () => {
+    // получим анализ торговли
     let statistics = await getTradingStatistics();
-    console.log(statistics)
-   
-    // отсортируем results по убыванию прибыли
     
+    // отсортируем statistics по убыванию прибыли
+    let sortedStatistics = [...statistics].sort((a, b) => 
+        b.realized.invested - a.realized.invested
+    )
     // отобразим результат
-})()
+    renderRows(
+        table, 
+        sortedStatistics.filter((item) => item.realized.invested), 
+        (item) => new CustomPnLRow({ pair: item.pair, ...item.realized })
+    );
+})();
 
 
 

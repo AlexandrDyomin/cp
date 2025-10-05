@@ -5,7 +5,7 @@ import './new_coin_modal/new_coin_modal.js';
 import './delete_btn/delete_btn.js';
 import { connectDB, makeReadAllRecords } from './db.js';
 import { renderRows } from './renderRows.js';
-import { CustomTR } from './coins_row.js';
+import { CustomTR } from './Coins_row.js';
 import './download_btn.js';
 
 let table = document.querySelector('.coins');

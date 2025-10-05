@@ -11,6 +11,23 @@
     <div class="app">
         <div class="container">
             <h1>Потенциальная прибыль/убыток</h1>
+            <div class="file-db">
+                <div class="upload" title="Загрузить файл БД">
+                <input type="file" accept="application/json">
+                <span class="upload__btn small-btn">↑</span>
+            </div>
+                <a class="download small-btn"  download="cp.json" title="Скачать файл БД" tabindex="0">↓</a>
+            </div>
+            <div style="overflow: auto; padding-bottom: 10px;">
+                <table class="pairs">
+                    <thead>
+                        <tr>
+                            <th>Монета</th>
+                            <th>Прибыль</th>
+                            <th>Доходность</th>
+                            <th>Инвестировано</th>
+                        </tr>
+                    </thead>
             <custom-nav data-active-link="4"></custom-nav>
         </div>
     </div>

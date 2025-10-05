@@ -3,10 +3,15 @@
 @import url('square_btn.css');
 @import url('download_btn.css');
 
+.pairs__name {
+    text-transform: uppercase;
+}
 
-/* body {
-    background-image: url(star-lord.gif);
-    background-repeat: no-repeat;
-    background-position: 50% 100px;
-    background-size: 25%;
-} */
+.pairs__profit::before,
+.pairs__invested::before {
+    content: '$';
+}
+
+.pairs__percent::after {
+    content: '%';
+}

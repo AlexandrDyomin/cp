@@ -1,6 +1,6 @@
 import './../modal/modal.js';
 import { modal, modalFields, saveBtn } from './../modal/modal.js';
-import { CustomBody } from '../transaction-row.js';
+import { CustomBody } from '../Transaction_body.js';
 import { collectData } from '../modal/colletcData.js';
 import { renderRows } from '../renderRows.js';
 import { updateRow} from '../update_row.js';

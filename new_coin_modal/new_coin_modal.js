@@ -3,7 +3,7 @@ import { modal, modalFields, saveBtn } from './../modal/modal.js';
 import { updateRow } from "../update_row.js";
 import { renderRows } from "../renderRows.js";
 import { collectData } from "../modal/colletcData.js";
-import { CustomTR } from "../coins_row.js";
+import { CustomTR } from "../Coins_row.js";
 
 let table = document.querySelector('.coins');
 
