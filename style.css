@@ -10,12 +10,15 @@
 
 /* Общий баланс */
 .balance {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
     margin-bottom: 20px;
 }
 
 .balance__value {
     font-weight: 600;
+    flex-basis: 100px;
 }
 
 .coins {
