@@ -5,18 +5,23 @@ import { getPrice } from "./getPriceCoin.js";
 export async function getTradingStatistics () {
     // получим список транзакций
     let transactions = await getTransactions();
-
+    
     // для каждой монеты создадим список покупок и список продаж
     let pairs = splitIntoBuysSells(transactions);
     
     // вычислим прибыль/убыток по монете и добавим его в общий список results
     let result = [];
     for (let pairInfo of pairs) {
-        let currentPrice = await getPrice(pairInfo.pair.split('/')[0]);
-        let item = calculateProfit(pairInfo.buys, pairInfo.sells, currentPrice);
-        item.pair = pairInfo.pair;
-        result.push(item);
+        result.push(new Promise((resolve) => {
+            let currentPrice = getPrice(pairInfo.pair.split('/')[0]);
+            currentPrice.then((price) => {
+                let item = calculateProfit(pairInfo.buys, pairInfo.sells, price);
+                item.pair = pairInfo.pair;
+                resolve(item);
+            })
+        }));
     }
+    
     return result;
     
     function getTransactions() {
@@ -50,7 +55,7 @@ export async function getTradingStatistics () {
     
             result.push(pairInfo);
         }
-    
+        
         return result;
     
         function getPairNames(transactions) {
