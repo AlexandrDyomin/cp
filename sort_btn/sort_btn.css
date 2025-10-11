@@ -1,0 +1,19 @@
+.sort-btn svg {
+    vertical-align: sub;
+}
+
+.sort-btn_little path:first-child{
+    fill: black;
+}
+
+.sort-btn_little path:last-child{
+    fill: white;
+}
+
+.sort-btn_big path:first-child{
+    fill: white;
+}
+
+.sort-btn_big path:last-child{
+    fill: black;
+}

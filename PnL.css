@@ -2,6 +2,7 @@
 @import url('navigation/navigation.css');
 @import url('square_btn.css');
 @import url('download_btn.css');
+@import url('sort_btn/sort_btn.css');
 
 .pairs__name {
     text-transform: uppercase;

@@ -1,5 +1,6 @@
 import './navigation/navigation.js';
 import './download_btn.js';
+import './sort_btn/sort_btn.js';
 import { getTradingStatistics } from './getTradingStatistics.js';
 import { CustomPnLRow } from './Pairs_row.js';
 
