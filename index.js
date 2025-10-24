@@ -52,6 +52,7 @@ let sortFn = sortTable();
 
 btn.addEventListener('click', () => {
     let rows = table.querySelectorAll('tr[is=custom-tr]');
+    balanceValue.textContent = '';
     sortFn(
         table,
         rows, 
