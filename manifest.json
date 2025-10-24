@@ -1,7 +1,7 @@
 {
   "name": "Crypto portfolio",
   "short_name": "cp",
-  "start_url": "alexandrdyomin.github.io/cp/",
+  "start_url": "cp/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ffffff",
