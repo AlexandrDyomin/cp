@@ -50,15 +50,19 @@ export class CustomTR extends HTMLTableRowElement {
     }
 
     disconnectedCallback() {
-        let { id } = this.dataset;
-        
-        connectDB((e)=> {
-            let wallet = startTransaction(e, 'wallet', 'readwrite');
-            wallet.delete(+id);
+        let row = this;
+        requestAnimationFrame(function() {
+            if (!row.isConnected) {
+                let { id } = row.dataset;
+                connectDB((e)=> {
+                    let wallet = startTransaction(e, 'wallet', 'readwrite');
+                    wallet.delete(+id);
+                });
+                document.dispatchEvent(new CustomEvent('coin-deleted', {
+                    detail: { totalPrice: row.totalPrice }
+                }));
+            }
         });
-        document.dispatchEvent(new CustomEvent('coin-deleted', {
-            detail: { totalPrice: this.totalPrice }
-        }));
     }
 
     static get observedAttributes() {
@@ -100,7 +104,6 @@ export class CustomTR extends HTMLTableRowElement {
                 this.dataset.id = id;
             };
             putRequest.onerror = () => {
-                this.remove();
                 let wallet = startTransaction(e, 'wallet', 'readwrite');
                 let coinIndex = wallet.index('coinIdx');
                 let coin = coinIndex.get(obj.coin);
@@ -110,6 +113,12 @@ export class CustomTR extends HTMLTableRowElement {
                         obj.id = +record.id;
                         obj.amount = record.amount + obj.amount;
                         let row = document.querySelector(`.coins__record[data-id="${obj.id}"]`);
+                        if (row !== null) {
+                            this.remove();
+                        } else {
+                            row = this;
+                            row.dataset.id = obj.id;
+                        }
                         row.dataset.amount = obj.amount;
                         row.dataset.timeUpdate = Date.now();
                     }
