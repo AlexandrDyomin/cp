@@ -47,7 +47,7 @@ export class CustomBody extends HTMLTableSectionElement {
             </tr>
             <tr>
                 <th>Количество</th>
-                <td class="transactions__amount">${ amount }</td>
+                <td class="transactions__amount coins-before">${ amount }</td>
             </tr>
             <tr>
                 <th>Цена</th>

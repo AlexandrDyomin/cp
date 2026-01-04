@@ -38,7 +38,7 @@ export class CustomTR extends HTMLTableRowElement {
                 </button>
             </td>
             <td class="coins__coin">${ coin }</td>
-            <td class="coins__amount">${ amount }</td>
+            <td class="coins__amount coins-before">${ amount }</td>
             <td class="coins__price"></td>
             <td class="coins__total-price"></td>
             <td class="coins__btn">

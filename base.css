@@ -96,12 +96,16 @@ tr:first-child:hover {
     object-position: 0px 1px;
 }
 
-
 .file-db {
     display: flex;
     gap: 15px;
     justify-content: center;
     margin-bottom: 20px;
+}
+
+.coins-before::before {
+    content: url(coins.svg);
+    padding-right: 3px;
 }
 
 
