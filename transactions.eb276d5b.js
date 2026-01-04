@@ -47,7 +47,7 @@ function t(t,e,a,n){Object.defineProperty(t,e,{get:a,set:n,enumerable:!0,configu
             </tr>
             <tr>
                 <th>\u{41A}\u{43E}\u{43B}\u{438}\u{447}\u{435}\u{441}\u{442}\u{432}\u{43E}</th>
-                <td class="transactions__amount">${n}</td>
+                <td class="transactions__amount coins-before">${n}</td>
             </tr>
             <tr>
                 <th>\u{426}\u{435}\u{43D}\u{430}</th>

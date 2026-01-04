@@ -30,7 +30,7 @@ function e(e,t,n,o){Object.defineProperty(e,t,{get:n,set:o,enumerable:!0,configu
                 </button>
             </td>
             <td class="coins__coin">${e}</td>
-            <td class="coins__amount">${t}</td>
+            <td class="coins__amount coins-before">${t}</td>
             <td class="coins__price"></td>
             <td class="coins__total-price"></td>
             <td class="coins__btn">
