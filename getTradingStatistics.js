@@ -1,4 +1,4 @@
-import { connectDB, makeReadAllRecords, startTransaction } from './db.js';
+import { connectDB, makeReadAllRecords } from './db.js';
 import { calculateProfit } from './calculateProfit.js';
 import { getPrice } from "./getPriceCoin.js";
 
