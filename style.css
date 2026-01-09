@@ -11,15 +11,17 @@
 
 /* Общий баланс */
 .balance {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min-content;
+    margin: 0 auto 20px;
     gap: 5px;
-    margin-bottom: 20px;
 }
 
-.balance__value {
+.balance__value,
+.balance__invested,
+.balance__profit {
     font-weight: 600;
-    flex-basis: 100px;
 }
 
 .coins {
@@ -32,8 +34,13 @@
 
 .coins__price::before,
 .coins__total-price::before,
-.balance__value::before {
+.balance__value::before,
+.balance__invested::before {
     content: '$'
+}
+
+.balance__profit::after {
+    content: '%';
 }
 
 .coins__btn {
