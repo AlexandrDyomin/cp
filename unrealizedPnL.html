@@ -16,20 +16,20 @@
     <div class="app">
         <div class="container">
             <h1>Потенциальная прибыль/убыток</h1>
-            <div class="file-db">
+            <div class="buttons">
                 <div class="upload" title="Загрузить файл БД">
-                <input type="file" accept="application/json">
-                <span class="upload__btn small-btn">↑</span>
-            </div>
+                    <input type="file" accept="application/json">
+                    <span class="upload__btn small-btn">↑</span>
+                </div>
                 <a class="download small-btn"  download="cp.json" title="Скачать файл БД" tabindex="0">↓</a>
-            </div>
-            <div style="margin-bottom: 10px; width: min-content; margin-left: auto;">
-                <button class="sort-btn small-btn" title="Сортировать по прибыли">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M13.7861 7H2.21387L8 0.736328L13.7861 7Z" fill="white" stroke="black"/>
-                        <path d="M2.21387 10L13.7861 10L8 16.2637L2.21387 10Z" fill="white" stroke="black"/>
-                    </svg>
-                </button>
+                <div style="position:absolute; right: 0;">
+                    <button class="sort-btn small-btn" title="Сортировать по стоимости">
+                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.7861 7H2.21387L8 0.736328L13.7861 7Z" fill="white" stroke="black"/>
+                            <path d="M2.21387 10L13.7861 10L8 16.2637L2.21387 10Z" fill="white" stroke="black"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div style="overflow: auto; padding-bottom: 10px;">
                 <table class="pairs">

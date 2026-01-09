@@ -96,11 +96,12 @@ tr:first-child:hover {
     object-position: 0px 1px;
 }
 
-.file-db {
+.buttons {
     display: flex;
     gap: 15px;
     justify-content: center;
     margin-bottom: 20px;
+    position: relative;
 }
 
 .coins-before::before {
