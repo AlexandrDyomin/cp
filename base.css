@@ -106,6 +106,7 @@ tr:first-child:hover {
 .coins-before::before {
     content: url(coins.svg);
     padding-right: 3px;
+    margin-left: -3px;
 }
 
 
