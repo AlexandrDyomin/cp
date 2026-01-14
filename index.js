@@ -8,6 +8,9 @@ import { renderRows } from './renderRows.js';
 import { CustomTR } from './Coins_row.js';
 import './download_btn.js';
 import { sortTable } from './sort_btn/sort_btn.js';
+import { getTradingStatistics } from './getTradingStatistics.js';
+import { CustomPnLRow } from './Pairs_row.js';
+
 
 let table = document.querySelector('.coins');
 connectDB(makeReadAllRecords('wallet', (data) => {
@@ -30,6 +33,35 @@ document.addEventListener('coin-added', increaseBalance);
 document.addEventListener('coin-changed', recalcBalance);
 document.addEventListener('coin-deleted', decreaseBalance);
 
+let btn = document.querySelector('.sort-btn');
+let sortFn = sortTable();
+
+(async () => {
+    // получим анализ торговли
+    let data = await getTradingStatistics();
+    // посчитаем профит и отобразим результат
+    let invested = 0;
+    let profit = 0;
+    let profitPercent;
+    let balanceInvested = document.querySelector('.balance__invested');
+    let balanceProfit = document.querySelector('.balance__profit');
+    Promise.allSettled(data)
+        .then((data) => {
+            for (let item of data) {
+                let pair = item.value;
+                invested += pair.total.invested;
+                profit += pair.total.profit;
+            };
+            profitPercent = profit / invested * 100;
+            balanceInvested.textContent = invested.toFixed(2);
+            balanceProfit.textContent = `${profit.toFixed(2)}(${profitPercent.toFixed(2)}%)`;
+            // стилизуем профит
+            if (profit < 0) {
+                balanceProfit.classList.add('balance__profit_red');
+            }
+        });
+})();
+
 let balanceValue = document.querySelector('.balance__value');
 
 function increaseBalance(e) {
@@ -47,9 +79,6 @@ function decreaseBalance(e) {
     balanceValue.textContent = (+balanceValue.textContent - e.detail.totalPrice).toFixed(2);
 }
 
-let btn = document.querySelector('.sort-btn');
-let sortFn = sortTable();
-
 btn.addEventListener('click', () => {
     let rows = table.querySelectorAll('tr[is=custom-tr]');
     balanceValue.textContent = '';
@@ -59,4 +88,4 @@ btn.addEventListener('click', () => {
         (a, b) => +b.children[4].textContent - +a.children[4].textContent, 
         (a, b) => +a.children[4].textContent - +b.children[4].textContent
     );
-})
+});

@@ -24,6 +24,14 @@
     font-weight: 600;
 }
 
+.balance__profit {
+    color: green;
+}
+
+.balance__profit_red {
+    color: red;
+}
+
 .coins {
     min-width: 300px;
 }
@@ -35,12 +43,9 @@
 .coins__price::before,
 .coins__total-price::before,
 .balance__value::before,
-.balance__invested::before {
-    content: '$'
-}
-
-.balance__profit::after {
-    content: '%';
+.balance__invested::before,
+.balance__profit::before {
+    content: '$';
 }
 
 .coins__btn {
