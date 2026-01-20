@@ -52,7 +52,7 @@ let sortFn = sortTable();
                 invested += pair.total.invested;
                 profit += pair.total.profit;
             };
-            profitPercent = profit / invested * 100;
+            profitPercent = (profit / invested * 100) || 0;
             balanceInvested.textContent = invested.toFixed(2);
             balanceProfit.textContent = `${profit.toFixed(2)}(${profitPercent.toFixed(2)}%)`;
             // стилизуем профит
